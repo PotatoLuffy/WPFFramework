@@ -7,27 +7,41 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="EIP监控系统" Height="450" Width="800">
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <materialDesign:ColorZone Mode="Custom" Background="#1890FF" Foreground="White"  Padding="16" Grid.Row="0" ClipToBounds="False">
-            <DockPanel>
-                <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges">
-                    <ListBox>
-                        <ListBoxItem Content="Hello World" />
-                        <ListBoxItem Content="Nice Popup" />
-                        <ListBoxItem Content="Goodbye" />
-                    </ListBox>
-                </materialDesign:PopupBox>
-                <StackPanel Orientation="Horizontal">
-                    <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                    <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="Material Design In XAML Toolkit" />
-                </StackPanel>
-            </DockPanel>
-        </materialDesign:ColorZone>
 
-    </Grid>
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton,Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="212" >
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                  DockPanel.Dock="Top"
+                                  HorizontalAlignment="Right" Margin="16"
+                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0">
+
+                        <ListBoxItem>123</ListBoxItem>
+                        <ListBoxItem>456</ListBoxItem>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone Mode="Custom" Background="#1890FF" Foreground="White"  Padding="16" ClipToBounds="False"  DockPanel.Dock="Top">
+                    <DockPanel>
+                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges">
+                            <ListBox>
+                                <ListBoxItem Content="Hello World" />
+                                <ListBoxItem Content="Nice Popup" />
+                                <ListBoxItem Content="Goodbye" />
+                            </ListBox>
+                        </materialDesign:PopupBox>
+                        <StackPanel Orientation="Horizontal">
+                            <ToggleButton x:Name="MenuToggleButton" IsChecked="False" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                            <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="Material Design In XAML Toolkit" />
+                        </StackPanel>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+
 </Window>
