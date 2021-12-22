@@ -1,4 +1,5 @@
 ﻿using EIPMonitor.CustomUserControlRepository;
+using EIPMonitor.ViewModel.MessagesViewModels;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace EIPMonitor
         {
             var sampleMessageDialog = new SampleMessageDialog
             {
-                Message = { Text = ((ButtonBase)sender).Content.ToString() }
+                Message = { Text = ((ButtonBase)sender).Content.ToString() },
             };
 
             await DialogHost.Show(sampleMessageDialog, "RootDialog");
@@ -52,9 +53,9 @@ namespace EIPMonitor
         {
             var sampleMessageDialog = new SampleMessageDialog
             {
-                Message = { Text = ((ButtonBase)sender).Content.ToString() }
-            };
+                Message = { Text = ((ButtonBase)sender).Content.ToString() },
 
+            };
             await DialogHost.Show(sampleMessageDialog, "RootDialog");
         }
     }
