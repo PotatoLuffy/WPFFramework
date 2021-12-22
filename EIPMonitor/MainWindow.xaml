@@ -27,20 +27,34 @@
             <DockPanel>
                 <materialDesign:ColorZone Mode="Custom" Background="#1890FF" Foreground="White"  Padding="16" ClipToBounds="False"  DockPanel.Dock="Top">
                     <DockPanel>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges">
-                            <ListBox>
-                                <ListBoxItem Content="Hello World" />
-                                <ListBoxItem Content="Nice Popup" />
-                                <ListBoxItem Content="Goodbye" />
-                            </ListBox>
+                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                            <StackPanel>
+                                <TextBlock x:Name="loginUserNameTextBlock" Margin="20 0 10 0" Text="欢迎,丁龙飞"/>
+                                <Separator/>
+                                <Button x:Name="changePasswordBtn" Content="Hello World" Click="changePasswordBtn_Click"/>
+                                <Separator/>
+                                <Button x:Name="logOutBtn" Content="Good Bye" Click="logOutBtn_Click"/>
+                            </StackPanel>
                         </materialDesign:PopupBox>
                         <StackPanel Orientation="Horizontal">
-                            <ToggleButton x:Name="MenuToggleButton" IsChecked="False" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                            <ToggleButton x:Name="MenuToggleButton" IsChecked="False" FontSize="14"  Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
                             <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="Material Design In XAML Toolkit" />
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:ColorZone>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" HorizontalScrollBarVisibility="{Binding SelectedItem.HorizontalScrollBarVisibilityRequirement, FallbackValue=Disabled}" VerticalScrollBarVisibility="{Binding SelectedItem.VerticalScrollBarVisibilityRequirement, FallbackValue=Disabled}" >
+                        <ContentControl DataContextChanged="OnSelectedItemChanged"  DataContext="{Binding SelectedItem}"  Margin="{Binding MarginRequirement, FallbackValue=16}" Content="{Binding Content, UpdateSourceTrigger=PropertyChanged, FallbackValue={x:Null}}"/>
+                    </ScrollViewer>
+
+                    <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"  Grid.Row="1"/>
+                </Grid>
             </DockPanel>
+
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>
 
