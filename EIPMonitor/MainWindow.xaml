@@ -4,8 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EIPMonitor"
+        xmlns:viewModel="clr-namespace:EIPMonitor.ViewModel.NavigationBar"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}"
+        Style="{StaticResource MaterialDesignWindow}" 
+        WindowStartupLocation="CenterScreen"
         Title="EIP监控系统" Height="450" Width="800">
 
 
@@ -17,10 +22,19 @@
                                   DockPanel.Dock="Top"
                                   HorizontalAlignment="Right" Margin="16"
                                   IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="0">
-
-                        <ListBoxItem>123</ListBoxItem>
-                        <ListBoxItem>456</ListBoxItem>
+                    <ListBox x:Name="DemoItemsListBox" Margin="0 16 0 16" SelectedIndex="{Binding SelectedIndex}"
+                             SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding NavigationItems}"
+                             Style="{StaticResource MaterialDesignNavigationListBox }"
+                             >
+                        <ListBox.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                        </ListBox.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="domain:DemoItem">
+                                <TextBlock Text="{Binding Name}" Margin="24 4 0 4" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>

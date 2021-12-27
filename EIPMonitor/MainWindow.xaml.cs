@@ -1,5 +1,6 @@
 ﻿using EIPMonitor.CustomUserControlRepository;
 using EIPMonitor.ViewModel.MessagesViewModels;
+using EIPMonitor.ViewModel.NavigationBar;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace EIPMonitor
                 //need to get the message queue from the snackbar, so need to be on the dispatcher
                 MainSnackbar.MessageQueue?.Enqueue("Welcome to EIP Monitor");
             }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue!);
         }
 
 
