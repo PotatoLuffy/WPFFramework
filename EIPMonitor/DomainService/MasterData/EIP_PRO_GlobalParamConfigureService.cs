@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.DomainServices.MasterData
 {
-    public class EIP_PRO_GlobalParamConfigureService
+    public class EIP_PRO_GlobalParamConfigureService : IEIP_PRO_GlobalParamConfigureService
     {
         private readonly ISearch search;
         private readonly String searchSql;

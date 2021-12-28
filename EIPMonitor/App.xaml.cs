@@ -1,7 +1,6 @@
 ﻿using EIPMonitor.Ioc;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Views.UserWindowViews;
-using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,7 +18,8 @@ namespace EIPMonitor
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            IocKernel.Initialize(new IocConfiguration());
+            IocConfiguration iocConfiguration = new IocConfiguration();
+            iocConfiguration.InitializeModules();
             base.OnStartup(e);
         }
     }

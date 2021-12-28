@@ -36,7 +36,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private IUserStamp _user;
 
         public IUserStamp User { get => _user; set => _user = value; }
-        public String Name { get => _user.UserName; }
+        public String Name { get => _user?.UserName??String.Empty; }
         public ObservableCollection<NavigationItem> NavigationItems { get; }
 
         public NavigationItem? SelectedItem
