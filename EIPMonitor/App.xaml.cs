@@ -1,5 +1,6 @@
 ﻿using EIPMonitor.Ioc;
 using EIPMonitor.LocalInfrastructure;
+using EIPMonitor.Views.UserWindowViews;
 using Ninject;
 using System;
 using System.Collections.Generic;

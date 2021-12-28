@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.DomainServices.UserService
 {
-   public sealed class EIPProductionIndexUsersLogin
+    public sealed class EIPProductionIndexUsersLogin : IEIPProductionIndexUsersLogin
     {
         private readonly ISearch search;
         private readonly string sqlText;
@@ -26,19 +26,19 @@ namespace EIPMonitor.DomainServices.UserService
             eIPProductionIndexUsers.Status = Model.Widget.Status.Active;
             eIPProductionIndexUsers.StatusName = Model.Widget.Status.Active.ToString();
             var entry = await search.ExtractEntry<EIPProductionIndexUsers>(sqlText, eIPProductionIndexUsers).ConfigureAwait(false);
-                EIP_Monitor_LogCreateService.Log(new EIP_Monitor_Log()
-                {
-                    FunctionCalledInLogical = "DomainService:EIPProductionIndexUsersChangeStatusService,Method:ChangeStatus",
-                    OperateDateTime = DateTime.Now,
-                    OperatorUser = $"{entry?.EmployeeId?? eIPProductionIndexUsers.UserName} {entry?.UserName?? eIPProductionIndexUsers.UserName}",
-                    ParameterJson = JsonConvert.SerializeObject(eIPProductionIndexUsers),
-                    SqlClauseOrFunction = $"searchSql Clause:{sqlText}"
-                });
+            EIP_Monitor_LogCreateService.Log(new EIP_Monitor_Log()
+            {
+                FunctionCalledInLogical = "DomainService:EIPProductionIndexUsersChangeStatusService,Method:ChangeStatus",
+                OperateDateTime = DateTime.Now,
+                OperatorUser = $"{entry?.EmployeeId ?? eIPProductionIndexUsers.UserName} {entry?.UserName ?? eIPProductionIndexUsers.UserName}",
+                ParameterJson = JsonConvert.SerializeObject(eIPProductionIndexUsers),
+                SqlClauseOrFunction = $"searchSql Clause:{sqlText}"
+            });
             if (entry == null) return null;
             if (entry.Password.Equals(eIPProductionIndexUsers.Password) && entry.Password.Equals("123")) return entry;
             var recomputeThePassword = UserEncryptionService.Encrypt(entry, eIPProductionIndexUsers.Password);
             if (recomputeThePassword.Equals(entry.Password)) return entry;
-            
+
             return null;
         }
     }

@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using EIPMonitor.Model;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 new NavigationItem(
                     "Welcome",
                     typeof(Welcome)
+                    
                 )
             });
             var items = GenerateNavigationItems(snackbarMessageQueue)?.OrderBy(i => i.Name)??null;
@@ -31,7 +33,10 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private NavigationItem? _selectedItem;
         private int _selectedIndex;
         private bool _controlsEnabled = true;
+        private IUserStamp _user;
 
+        public IUserStamp User { get => _user; set => _user = value; }
+        public String Name { get => _user.UserName; }
         public ObservableCollection<NavigationItem> NavigationItems { get; }
 
         public NavigationItem? SelectedItem

@@ -41,17 +41,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ClosedXML.0.95.4\lib\net46\ClosedXML.dll</HintPath>
-    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
     <Reference Include="Infrastructure.Standard">
       <HintPath>..\..\..\..\..\Net Packages\Standard\Infrastructure.Standard\Infrastructure.Standard.dll</HintPath>
@@ -193,7 +184,9 @@
     <Compile Include="DomainService\UserService\EIPProductionIndexUsersRegisterService.cs" />
     <Compile Include="DomainService\UserService\EIPProductionIndexUsersScanService.cs" />
     <Compile Include="DomainService\UserService\EIPProductionIndexUsersSearchService.cs" />
+    <Compile Include="DomainService\UserService\IEIPProductionIndexUsersLogin.cs" />
     <Compile Include="DomainService\UserService\UserEncryptionService.cs" />
+    <Compile Include="Ioc\CommandHandler.cs" />
     <Compile Include="Ioc\IocConfiguration.cs" />
     <Compile Include="LocalInfrastructure\IocKernel.cs" />
     <Compile Include="LocalInfrastructure\LocalConstant.cs" />
@@ -272,6 +265,7 @@
     <Compile Include="Views\UserWindowViews\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WelcomeVewModel.cs" />
     <Compile Include="Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
@@ -321,6 +315,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Log4Net.config" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -345,6 +340,12 @@
     <Resource Include="Icons\favicon.ico" />
     <Resource Include="Icons\gears.png" />
     <Resource Include="Icons\head_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\background1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.3.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.3.0\build\MaterialDesignThemes.targets')" />

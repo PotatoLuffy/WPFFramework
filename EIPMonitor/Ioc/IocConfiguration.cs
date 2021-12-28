@@ -1,4 +1,5 @@
-﻿using EIPMonitor.Model;
+﻿using EIPMonitor.DomainServices.UserService;
+using EIPMonitor.Model;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace EIPMonitor.Ioc
         public override void Load()
         {
             Bind<IUserStamp>().To<UserStamp>().InSingletonScope();
+            Bind<IEIPProductionIndexUsersLogin>().To<EIPProductionIndexUsersLogin>().InSingletonScope();
         }
     }
 }
