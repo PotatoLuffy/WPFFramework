@@ -29,7 +29,7 @@ namespace EIPMonitor.DomainServices.MasterData
             {
                 FunctionCalledInLogical = "DomainService:MOSearchService,Method:GetEntry",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(mo),
                 SqlClauseOrFunction = $"Search Clause:{searchEntry}"
             });

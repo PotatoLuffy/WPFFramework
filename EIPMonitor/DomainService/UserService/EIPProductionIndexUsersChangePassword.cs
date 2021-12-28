@@ -43,7 +43,7 @@ namespace EIPMonitor.DomainServices.UserService
             {
                 FunctionCalledInLogical = "DomainService:EIPProductionIndexUsersChangePassword,Method:PasswordReset",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(eIPProductionIndexUsers),
                 SqlClauseOrFunction = $"searchSql Clause:{searchSql},update Claulse:{updateSql}"
             });

@@ -30,7 +30,7 @@ namespace EIPMonitor.DomainServices.MasterData
             {
                 FunctionCalledInLogical = "DomainService:EIP_PRO_GlobalParamConfigureService,Method:ExtractConfiguration",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(eIP_PRO_GlobalParameter),
                 SqlClauseOrFunction = $"Search Clause:{searchSql}"
             });

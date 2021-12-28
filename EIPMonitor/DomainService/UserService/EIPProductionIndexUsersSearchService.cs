@@ -33,7 +33,7 @@ namespace EIPMonitor.DomainServices.UserService
             {
                 FunctionCalledInLogical = "DomainService:EIPProductionIndexUsersSearchService,Method:Search",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(dynamicParameter),
                 SqlClauseOrFunction = $"searchSql Clause:{sqlText}"
             });

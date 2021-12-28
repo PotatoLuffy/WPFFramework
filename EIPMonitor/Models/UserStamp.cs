@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.Model
 {
-    public class UserStamp
+    public class UserStamp : IUserStamp
     {
         public string UserName { get; set; }
         public string EmployeeId { get; set; }

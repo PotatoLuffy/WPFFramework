@@ -47,7 +47,7 @@ namespace EIPMonitor.DomainServices.MasterData
                 {
                     FunctionCalledInLogical = "DomainService:ZCL_SIMUL_DService,Method:GetEntries, Range Search",
                     OperateDateTime = DateTime.Now,
-                    OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                    OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                     ParameterJson = JsonConvert.SerializeObject(dynamicParameters),
                     SqlClauseOrFunction = $"Search Clause:{sqlText}"
                 });
@@ -67,7 +67,7 @@ namespace EIPMonitor.DomainServices.MasterData
                 {
                     FunctionCalledInLogical = "DomainService:ZCL_SIMUL_DService,Method:GetEntries, list Search",
                     OperateDateTime = DateTime.Now,
-                    OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                    OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                     ParameterJson = JsonConvert.SerializeObject(dynamicParameters),
                     SqlClauseOrFunction = $"Search Clause:{sqlText}"
                 });

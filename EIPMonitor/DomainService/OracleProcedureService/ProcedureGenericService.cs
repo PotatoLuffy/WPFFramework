@@ -1,4 +1,5 @@
 ﻿using EIPMonitor.Databse.Generic;
+using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
 using EIPMonitor.Transaction.Interface.Generic;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace EIPMonitor.DomainServices.OracleProcedureService
             {
                 FunctionCalledInLogical = "DomainService:ProcedureGenericService,Method:CallProcedure",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(@t),
                 SqlClauseOrFunction = $"Clause:{sqlText}"
             });

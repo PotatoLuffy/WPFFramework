@@ -33,7 +33,7 @@ namespace EIPMonitor.DomainServices.MasterData
             {
                 FunctionCalledInLogical = "DomainService:ZGW_MO_TYPECreateService,Method:Create",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(zGW_MO_TYPE),
                 SqlClauseOrFunction = $"Search Clause:{searchSql}, Insert Clause:{insertSql}"
             });

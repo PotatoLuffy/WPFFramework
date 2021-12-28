@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EIPMonitor.Ioc;
+using EIPMonitor.LocalInfrastructure;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +16,10 @@ namespace EIPMonitor
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            IocKernel.Initialize(new IocConfiguration());
+            base.OnStartup(e);
+        }
     }
 }

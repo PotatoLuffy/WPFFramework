@@ -1,4 +1,5 @@
 ﻿using EIPMonitor.Databse;
+using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
 using EIPMonitor.Model.SGCC;
 using Newtonsoft.Json;
@@ -21,7 +22,7 @@ namespace EIPMonitor.DomainServices.SGCC
             {
                 FunctionCalledInLogical = "DomainService:PD_MQC_TVSSearchService,Method:GetEntries",
                 OperateDateTime = DateTime.Now,
-                OperatorUser = $"{LoginWindow.UserStamp.EmployeeId} {LoginWindow.UserStamp.UserName}",
+                OperatorUser = $"{IocKernel.Get<UserStamp>().EmployeeId} {IocKernel.Get<UserStamp>().UserName}",
                 ParameterJson = JsonConvert.SerializeObject(eM_EXP_PRO_BASICER),
                 SqlClauseOrFunction = $"Clause:{sqlText}"
             });
