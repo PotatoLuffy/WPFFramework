@@ -9,12 +9,12 @@
         xmlns:viewModel="clr-namespace:EIPMonitor.ViewModel.SecurityModels"
         d:DataContext="{d:DesignInstance viewModel:LoginViewModel}"
         mc:Ignorable="d"
-        Title="Login" Height="450"  Width="800" 
+        Title="Login" Height="500"  Width="800" 
         WindowStartupLocation="CenterScreen"  WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent">
     <Window.Effect>
         <DropShadowEffect BlurRadius="10" Color="#FF858484" Direction="90" ShadowDepth="1"/>
     </Window.Effect>
-    <Grid Width="400" Height="300">
+    <Grid Width="400" Height="350">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
@@ -24,23 +24,31 @@
             <ImageBrush  ImageSource="../../Icons/background.png"  Stretch="Fill" />
         </Grid.Background>
         <materialDesign:PackIcon Kind="Close" Width="30" Height="30"   HorizontalAlignment="Right"
-                                                     Foreground="White" VerticalAlignment="Center" MouseLeftButtonUp="PackIcon_MouseLeftButtonUp" >
+                                                     Foreground="White" VerticalAlignment="Center" MouseLeftButtonUp="PackIcon_MouseLeftButtonUp">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding ExitCommand, Mode=OneWay}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </materialDesign:PackIcon>
-        <Grid Grid.Row="1">
+        <Grid Height="290" Margin="0,0,0,39.8" Grid.RowSpan="3" VerticalAlignment="Bottom">
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="60" />
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="45"/>
                 <RowDefinition Height="25"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <materialDesign:PackIcon Grid.Row="0" Kind="Jsfiddle"  Foreground="White" VerticalAlignment="Center" Width="60" Height="60" HorizontalAlignment="Center" />
             <TextBox Grid.Row="1" materialDesign:HintAssist.Hint="用户名" Width="180" HorizontalAlignment="Center" Text="{Binding Name, Mode=TwoWay}" Foreground="White" BorderBrush="White" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
             <PasswordBox Grid.Row="2" Name="pass" materialDesign:HintAssist.Hint="密 码" Width="180"
                          Foreground="White" BorderBrush="White"   HorizontalAlignment="Center"
-                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" PasswordChanged ="pass_PasswordChanged" />
-            <Button Grid.Row="3" Content="登录" VerticalAlignment="Center" IsEnabled="True" HorizontalAlignment="Center" Width="180" Command="{Binding SignCommand , RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Login}}"/>
-            <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"  Grid.Row="4"/>
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                         PasswordChanged ="pass_PasswordChanged" >
+            </PasswordBox>
+            <Button Grid.Row="4" Content="登录" VerticalAlignment="Center" IsEnabled="True" HorizontalAlignment="Center" Width="180" Command="{Binding SignCommand}"/>
+            <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"  Grid.Row="5"/>
         </Grid>
     </Grid>
 </Window>

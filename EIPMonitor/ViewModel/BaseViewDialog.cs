@@ -32,7 +32,7 @@ namespace EIPMonitor.ViewModel
             if (Tview == null)
             {
                 Tview = new TView();
-                this.BindDefaultViewModel();
+                this.RegisterDefaultEvent();
             }
             return Tview;
         }

@@ -1,5 +1,7 @@
-﻿using EIPMonitor.Ioc;
+﻿using EIPMonitor.IDomainService;
+using EIPMonitor.Ioc;
 using EIPMonitor.LocalInfrastructure;
+using EIPMonitor.ViewDialog;
 using EIPMonitor.Views.UserWindowViews;
 using System;
 using System.Collections.Generic;
@@ -18,9 +20,13 @@ namespace EIPMonitor
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
             IocConfiguration iocConfiguration = new IocConfiguration();
             iocConfiguration.InitializeModules();
-            base.OnStartup(e);
+            var dialog = IocKernel.Get<IModelDialog>("LoginViewDialog");
+            dialog.BindDefaultViewModel();
+            dialog.ShowDialog();
+
         }
     }
 }

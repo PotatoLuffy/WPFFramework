@@ -43,7 +43,7 @@
                     <DockPanel>
                         <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
                             <StackPanel>
-                                <TextBlock x:Name="loginUserNameTextBlock" Margin="20 0 10 0" Text="{Binding Name, Mode=OneTime}"/>
+                                <TextBlock x:Name="loginUserNameTextBlock" Margin="20 0 10 0" Text="{Binding Name, Mode=OneWay}"/>
                                 <Separator/>
                                 <Button x:Name="changePasswordBtn" Content="Hello World" Click="changePasswordBtn_Click"/>
                                 <Separator/>

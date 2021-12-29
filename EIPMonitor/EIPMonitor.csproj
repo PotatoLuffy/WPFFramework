@@ -296,12 +296,17 @@
     <Compile Include="Transaction.Interface\Generic\IDeleteCommand.cs" />
     <Compile Include="Transaction.Interface\Generic\IExtractCommand.cs" />
     <Compile Include="Transaction.Interface\Generic\IUpdateCommand.cs" />
+    <Compile Include="ViewDialog\LoginViewDialog.cs" />
+    <Compile Include="ViewDialog\MainWindowDialog.cs" />
     <Compile Include="ViewModel\BaseViewDialog.cs" />
     <Compile Include="ViewModel\MessagesViewModels\SampleDialogViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\NavigationItem.cs" />
     <Compile Include="ViewModel\SecurityModels\LoginViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="Views\PowerMeter\WODataImport.xaml.cs">
+      <DependentUpon>WODataImport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserWindowViews\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -328,6 +333,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PowerMeter\WODataImport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserWindowViews\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -373,7 +382,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="ViewDialog\" />
     <Folder Include="Views\UserControlViews\" />
   </ItemGroup>
   <ItemGroup>

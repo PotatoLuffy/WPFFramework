@@ -15,5 +15,9 @@ namespace EIPMonitor.LocalInfrastructure
         {
             return container.Resolve<T>();
         }
+        public static T Get<T>( string name)
+        {
+            return container.Resolve<T>(name);
+        }
     }
 }
