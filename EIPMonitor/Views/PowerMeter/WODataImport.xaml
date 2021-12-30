@@ -7,85 +7,94 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="568" d:DesignWidth="800" Background="White">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="51" MaxHeight="51"  MinHeight="51"/>
-            <RowDefinition Height="46" MaxHeight="46" MinHeight="46"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-            <RowDefinition Height="47*" MinHeight="47"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="96*" MinWidth="96"/>
-            <ColumnDefinition Width="119*"  MinWidth="119"/>
-            <ColumnDefinition Width="68*"  MinWidth="68"/>
-            <ColumnDefinition Width="122*"  MinWidth="122"/>
-            <ColumnDefinition Width="101*"  MinWidth="101"/>
-            <ColumnDefinition Width="294*"/>
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="WorkOrderTextbox" materialDesign:HintAssist.Hint="工单号(按回车验证工单有效性)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.ColumnSpan="2"  KeyDown="WorkOrderTextbox_KeyDown" />
+    <ScrollViewer  materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" HorizontalScrollBarVisibility="{Binding SelectedItem.HorizontalScrollBarVisibilityRequirement, FallbackValue=Disabled}" VerticalScrollBarVisibility="{Binding SelectedItem.VerticalScrollBarVisibilityRequirement, FallbackValue=Disabled}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="51" MaxHeight="51"  MinHeight="51"/>
+                <RowDefinition Height="46" MaxHeight="46" MinHeight="46"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="96*" />
+                <ColumnDefinition Width="119*"  />
+                <ColumnDefinition Width="68*"  />
+                <ColumnDefinition Width="122*"  />
+                <ColumnDefinition Width="101*"  />
+                <ColumnDefinition Width="294*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="WorkOrderTextbox" materialDesign:HintAssist.Hint="工单号(按回车验证工单)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.ColumnSpan="2"  KeyDown="WorkOrderTextbox_KeyDown" />
+            <TextBox x:Name="MOQtyRequirement" materialDesign:HintAssist.Hint="数量" Text="" Grid.Column="4" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsEnabled="False" />
+            <TextBox x:Name="materialCodeTextbox" materialDesign:HintAssist.Hint="物料编码" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Grid.Column="2" IsReadOnly="True" IsEnabled="False"  VerticalAlignment="Center" Grid.ColumnSpan="2" />
+            <TextBox x:Name="materialNameTextbox" Text="" materialDesign:HintAssist.Hint="物料名称" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Grid.Column="5" IsReadOnly="True" IsEnabled="False"  VerticalAlignment="Center"/>
 
-        <TextBox x:Name="MOQtyRequirement" materialDesign:HintAssist.Hint="数量" Text="" Grid.Column="4" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"  />
+            <Button Grid.Row="1" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤1" />
+            <Button x:Name="AOITestButton" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤1 AOI 同步">
+                <TextBlock Text="AOI 同步" />
+            </Button>
+            <TextBox x:Name="AOITestTextBlock" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="AOI 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <TextBox x:Name="materialCodeTextbox" materialDesign:HintAssist.Hint="物料编码" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Grid.Column="1" IsReadOnly="True"  VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="119,8,10.8,8.2" />
+            <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤2" />
+            <Button x:Name="BatteryCurrentButton" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤2 电池电流 同步">
+                <TextBlock Text="电池电流 同步" />
+            </Button>
+            <TextBox x:Name="BatteryCurrentTextBlock" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="电池电流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <TextBox x:Name="materialNameTextbox" Text="" materialDesign:HintAssist.Hint="物料名称" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Grid.Column="5" IsReadOnly="True" Grid.ColumnSpan="3" VerticalAlignment="Center"/>
+            <Button Grid.Row="3" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤3" />
+            <Button x:Name="FuncionTestButton" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤3 单板测试 同步">
+                <TextBlock Text="单板测试 同步" />
+            </Button>
+            <TextBox x:Name="FuncionTestTextBlock" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="电池电流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序4"    Margin="13,10.2,36,11" Grid.Row="5"/>
-        <Label Content="耐压"   Margin="41,10.2,37.2,10" Grid.Row="5" Grid.Column="1" />
-        <Button Content="同步" x:Name="HighVoltageInsulationTestButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,8.6,10.6,10.6" Grid.Row="5" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="HighVoltageInsulationTestTextBlock"   Grid.Column="4" Margin="25.4,8.6,95,9.6" Grid.Row="5" TextWrapping="Wrap" IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="4" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤4" />
+            <Button x:Name="HighVoltageInsulationTestButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤4 耐压 同步">
+                <TextBlock Text="耐压 同步" />
+            </Button>
+            <TextBox x:Name="HighVoltageInsulationTestTextBlock" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="耐压 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序5" Margin="13,10,36,9.2" Grid.Row="6"/>
-        <Label Content="基本误差" Margin="29,9,18.2,12.2" Grid.Row="6" Grid.Column="1"/>
-        <Button Content="同步" x:Name="IntrinsicErrorButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,8.4,10.6,8.8" Grid.Row="6" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="IntrinsicErrorTextBlock" Grid.Column="4" Margin="25.4,9.4,95,14.8" Grid.Row="6" TextWrapping="Wrap"  IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="5" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
+            <Button x:Name="IntrinsicErrorButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 基本误差 同步">
+                <TextBlock Text="基本误差 同步" />
+            </Button>
+            <TextBox x:Name="IntrinsicErrorTextBlock" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序5" Margin="13,9.8,31,10.4" Grid.Row="7"/>
-        <Label Content="基本误差详情" Margin="23,8.8,10.2,10.4" Grid.Row="7" Grid.Column="1"/>
-        <Button Content="同步" x:Name="IntrinsicErrorDetailButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,9.2,10.6,9" Grid.Row="7" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="IntrinsicErrorDetailTextBlock" Grid.Column="4" Margin="25.4,9.2,95,15" Grid.Row="7" TextWrapping="Wrap"  IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="6" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
+            <Button x:Name="IntrinsicErrorDetailButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 基本误差详情 同步">
+                <TextBlock Text="基本误差详情 同步" />
+            </Button>
+            <TextBox x:Name="IntrinsicErrorDetailTextBlock" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差详情 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序5" Margin="13,9.6,36,9.8" Grid.Row="8"/>
-        <Label Content="日计时" Margin="32,9.6,29.2,9.8" Grid.Row="8" Grid.Column="1"/>
-        <Button Content="同步" x:Name="DailyTimingErrorButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,9,10.6,7.4" Grid.Row="8" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="DailyTimingErrorTextBlock" Grid.Column="4" Margin="25.4,9,95,15.4" Grid.Row="8" TextWrapping="Wrap"  IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
+            <Button x:Name="DailyTimingErrorButton" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 日计时 同步">
+                <TextBlock Text="日计时 同步" />
+            </Button>
+            <TextBox x:Name="DailyTimingErrorTextBlock" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="日计时 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序6"  Margin="13,10.2,31,10" Grid.Row="9"/>
-        <Label Content="参数设置" Margin="29,9.2,18.2,9" Grid.Row="9" Grid.Column="1" />
-        <Button Content="同步" x:Name="ParameterSettingButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,8.6,10.6,9.6" Grid.Row="9" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="ParameterSettingTextBlock"   Grid.Column="4" Margin="25.4,8.6,95,15.6" Grid.Row="9" TextWrapping="Wrap" IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
+            <Button x:Name="ParameterSettingButton" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤6 参数设置 同步">
+                <TextBlock Text="参数设置 同步" />
+            </Button>
+            <TextBox x:Name="ParameterSettingTextBlock" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="参数设置 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序2"  Margin="14,8.6,30,10.6" Grid.Row="3"/>
-        <Label Content="电池电流" Margin="27,8.6,20.2,10.6" Grid.Row="3" Grid.Column="1"/>
-        <Button Content="同步" x:Name="BatteryCurrentButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,9,10.6,8.2" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="BatteryCurrentTextBlock" Grid.Column="4"   Margin="25.4,9,95,10.2" Grid.Row="3" TextWrapping="Wrap" IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="9" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
+            <Button x:Name="ProductionStoreButton" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤7 成品入库 同步">
+                <TextBlock Text="成品入库 同步" />
+            </Button>
+            <TextBox x:Name="ProductionStoreTextBlock" Grid.Row="9" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="成品入库 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <Label Content="顺序3"  Margin="12,10.4,32,9.8" Grid.Row="4"/>
-        <Label Content="单板测试"  Margin="28,10.4,22.2,8.8" Grid.Row="4" Grid.Column="1"/>
-        <Button Content="同步" x:Name="FuncionTestButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10.8,8.8,10.6,9.4" Grid.Row="4" VerticalAlignment="Stretch" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="FuncionTestTextBlock" Grid.Column="4"  Margin="25.4,13.8,95,10.4" Grid.Row="4" TextWrapping="Wrap"  IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click" materialDesign:ButtonAssist.CornerRadius="10" Grid.Row="10" Grid.ColumnSpan="6" ToolTip="同步完成后,点击此按钮,实时更新计算分数，也可以不同步直接点击">
+                <TextBlock Text="计算分数" />
+            </Button>
 
-
-        <!--<TextBlock Margin="9,12.4,11,10.6" Grid.Row="1" TextWrapping="Wrap" Text="             生产过程" Grid.ColumnSpan="3" Grid.RowSpan="3" Grid.Column="3" IsEnabled="False" FontSize="32"/>-->
-        <!--<Label Content="顺序1"  Margin="14,9.8,0,0"  HorizontalAlignment="Left" Width="58" Height="28" VerticalAlignment="Top"/>-->
-        <Button x:Name="AOITestButton" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤1 AOI 同步">
-            <TextBlock Text="步骤1 AOI 同步" />
-        </Button>
-        <TextBlock x:Name="AOITestTextBlock"   Grid.Column="4" Margin="25.4,9.2,95,10" Grid.Row="2" TextWrapping="Wrap" IsEnabled="False" Grid.ColumnSpan="2"/>
-
-        <Label Content="顺序7"  Margin="13,10,31,11.2" Grid.Row="10"/>
-        <Label Content="成品入库" Margin="29,8,18.2,11.2"  Grid.Row="10"  Grid.Column="1"/>
-        <Button Content="同步" x:Name="ProductionStoreButton"  HorizontalAlignment="Stretch" Margin="10.8,8.4,10.6,9.8" Grid.Row="10" Grid.Column="2" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="ProductionStoreTextBlock"   Grid.Column="4" Margin="20.4,8.4,95,14.8" Grid.Row="10" TextWrapping="Wrap" IsEnabled="False" Grid.ColumnSpan="2"/>
-        <Button Content="计算分数" HorizontalAlignment="Stretch" Margin="10,9.2,10,10" Grid.Row="11" VerticalAlignment="Stretch" Grid.ColumnSpan="6" Click="Button_Click"/>
-
-    </Grid>
+            <DataGrid Grid.Row="11" Grid.ColumnSpan="6" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
+        </Grid>
+    </ScrollViewer>
 </UserControl>

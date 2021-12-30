@@ -1,6 +1,7 @@
 ﻿using EIPMonitor.DomainServices.MasterData;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
+using EIPMonitor.Views.PowerMeter;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
@@ -29,7 +30,8 @@ namespace EIPMonitor.ViewModel.NavigationBar
                     "Welcome",
                     typeof(Welcome)
 
-                )
+                ),
+                new NavigationItem("WODataImport",typeof(WODataImport))
             }) ;
             eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
             //var items = GenerateNavigationItems(snackbarMessageQueue)?.OrderBy(i => i.Name)??null;
@@ -79,11 +81,11 @@ namespace EIPMonitor.ViewModel.NavigationBar
             }
 
             Messenger.Default.Send($"3/{intializeTotalSteps}:验证版本信息", "SendMessageToLoginWin");
-            VeriyVersion().Wait();
+            //VeriyVersion().Wait();
             Messenger.Default.Send($"4/{intializeTotalSteps}:版本正确", "SendMessageToLoginWin");
 
             Messenger.Default.Send($"5/{intializeTotalSteps}:配置数据库信息", "SendMessageToLoginWin");
-            InitializeTheGlobalStaticParameter().Wait();
+            //InitializeTheGlobalStaticParameter().Wait();
             Messenger.Default.Send($"6/{intializeTotalSteps}:配置数据库信息", "SendMessageToLoginWin");
             //Messenger.Default.Send(String.Empty, "ApplicationShutdown");
         }

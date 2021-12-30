@@ -14,7 +14,7 @@
         Title="EIP监控系统" Height="450" Width="800">
 
 
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton,Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="212" >
@@ -26,13 +26,14 @@
                              SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
                              ItemsSource="{Binding NavigationItems}"
                              Style="{StaticResource MaterialDesignNavigationListBox }"
+                             AutomationProperties.Name="NavigationItemPagesListBox"
                              >
                         <ListBox.Resources>
                             <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
                         </ListBox.Resources>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="domain:DemoItem">
-                                <TextBlock Text="{Binding Name}" Margin="24 4 0 4" />
+                            <DataTemplate DataType="domain:NavigationItem">
+                                <TextBlock Text="{Binding Name}" Margin="24 4 0 4" AutomationProperties.AutomationId="NavigationItemPage" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
