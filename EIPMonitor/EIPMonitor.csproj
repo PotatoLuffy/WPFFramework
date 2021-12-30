@@ -299,6 +299,7 @@
     <Compile Include="ViewDialog\LoginViewDialog.cs" />
     <Compile Include="ViewDialog\MainWindowDialog.cs" />
     <Compile Include="ViewModel\BaseViewDialog.cs" />
+    <Compile Include="ViewModel\Functions\WOImportViewModel.cs" />
     <Compile Include="ViewModel\MessagesViewModels\SampleDialogViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\NavigationItem.cs" />

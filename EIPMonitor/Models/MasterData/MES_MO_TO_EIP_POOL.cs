@@ -67,7 +67,7 @@ namespace EIPMonitor.Model.MasterData
         public String HAS_UPLOADED_FLAGName { get => (this.HAS_UPLOADED_FLAG == 1).ToString(); }
 
         public Boolean ExistsFlag { get; set; }
-        public static MES_MO_TO_EIP_POOL GetDefaultInstance(UserStamp userStamp)
+        public static MES_MO_TO_EIP_POOL GetDefaultInstance(IUserStamp userStamp)
         {
             return new MES_MO_TO_EIP_POOL() { HAS_UPLOADED_FLAG = 0, IS_UPLOADABLE_TO_EIP = 0, UPLOAD_TO_OA_FLAG = 0, CREATED_DATE = DateTime.Now, CREATOR = $"{userStamp.EmployeeId} {userStamp.UserName}" };
         }

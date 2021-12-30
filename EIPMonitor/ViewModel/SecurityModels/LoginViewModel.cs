@@ -81,6 +81,10 @@ namespace EIPMonitor.ViewModel.SecurityModels
         public void LoginAction()
         {
             Interlocked.Increment(ref loginButtonCnt);
+            if (loginButtonCnt >= 1)
+            {
+                Messenger.Default.Send("正在验证用户,请勿重复点击。", "SendMessageToLoginWin");
+            }
             try
             {
                 this.Login();

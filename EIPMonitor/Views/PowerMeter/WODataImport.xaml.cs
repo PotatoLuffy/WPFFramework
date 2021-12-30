@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EIPMonitor.ViewModel.Functions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,46 +21,33 @@ namespace EIPMonitor.Views.PowerMeter
     /// </summary>
     public partial class WODataImport : UserControl
     {
+        private WOImportViewModel wOImportViewModel;
         public WODataImport()
         {
             InitializeComponent();
+            wOImportViewModel = new WOImportViewModel();
+            this.DataContext = wOImportViewModel;
         }
 
         private async void WorkOrderTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-            //this.WorkOrderTextbox.IsEnabled = false;
-            //try
-            //{
-            //    if (e.Key == Key.Enter)
-            //    {
-            //        var result = await VerifyTheMOName(this.WorkOrderTextbox.Text).ConfigureAwait(true);
-            //        if (result == null) return;
-            //        this.MOQtyRequirement.Text = result.AMOUNT.ToString("###,###");
-            //        this.materialCodeTextbox.Text = result.MATERIALSCODE;
-            //        this.materialNameTextbox.Text = result.MATERIALSNAME;
-            //        CleanAllTheCommentTextBlock();
-            //        EnableAllTheButton();
-            //    }
-            //}
-            //catch (Exception e1)
-            //{
-            //    LocalConstant.Logger.Debug("AppDomainUnhandledExceptionHandler", e1);
-            //    this.materialNameTextbox.Text = "该工单不是一个电能表工单";
-            //}
-            //finally
-            //{
-            //    this.WorkOrderTextbox.IsEnabled = true;
-
-            //}
+            if (e.Key == Key.Enter)
+            {
+                await wOImportViewModel.GetMOInformation().ConfigureAwait(true);
+            }
         }
 
         public async void SynchronousButton_ClickEventHandler(object sender, RoutedEventArgs e)
         {
-            
+            var button = sender as Button;
+            button.IsEnabled = false;
+            await wOImportViewModel.TriggerTheButtonRelativeAction(button.Name).ContinueWith(t => { button.IsEnabled = true; }, TaskScheduler.FromCurrentSynchronizationContext()).ConfigureAwait(true);
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            var button = sender as Button;
+            button.IsEnabled = false;
+            await wOImportViewModel.CalculateTheScore().ContinueWith(t=> { button.IsEnabled = true; },TaskScheduler.FromCurrentSynchronizationContext()).ConfigureAwait(true);
         }
     }
 }

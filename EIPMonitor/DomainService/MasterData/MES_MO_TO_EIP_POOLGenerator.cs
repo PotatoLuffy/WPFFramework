@@ -11,7 +11,7 @@ namespace EIPMonitor.DomainServices.MasterData
     public static class MES_MO_TO_EIP_POOLGenerator
     {
 
-        public static List<MES_MO_TO_EIP_POOL> Aggregate(this List<ZCL_SIMUL_D> zCL_SIMUL_Ds,UserStamp userStamp)
+        public static List<MES_MO_TO_EIP_POOL> Aggregate(this List<ZCL_SIMUL_D> zCL_SIMUL_Ds,IUserStamp userStamp)
         {
             var result = zCL_SIMUL_Ds.GroupBy(g => $"{g.WORK_ORDER_CODE}").Select(s =>
             {
