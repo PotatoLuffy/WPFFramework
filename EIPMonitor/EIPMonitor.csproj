@@ -299,6 +299,8 @@
     <Compile Include="ViewDialog\LoginViewDialog.cs" />
     <Compile Include="ViewDialog\MainWindowDialog.cs" />
     <Compile Include="ViewModel\BaseViewDialog.cs" />
+    <Compile Include="ViewModel\Functions\ProductionIndexQueryAutomationViewModel.cs" />
+    <Compile Include="ViewModel\Functions\ProductionIndexQueryUserControlViewModel.cs" />
     <Compile Include="ViewModel\Functions\WODataImportAutomationViewModel.cs" />
     <Compile Include="ViewModel\Functions\WOImportViewModel.cs" />
     <Compile Include="ViewModel\MessagesViewModels\SampleDialogViewModel.cs" />
@@ -306,8 +308,17 @@
     <Compile Include="ViewModel\NavigationBar\NavigationItem.cs" />
     <Compile Include="ViewModel\SecurityModels\LoginViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="Views\Automation\ProductionIndexQueryAutomation.xaml.cs">
+      <DependentUpon>ProductionIndexQueryAutomation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Automation\WODataImportAutomation.xaml.cs">
       <DependentUpon>WODataImportAutomation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PowerMeter\EIP_MO_CheckWin.xaml.cs">
+      <DependentUpon>EIP_MO_CheckWin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PowerMeter\ProductionIndexQueryUserControl.xaml.cs">
+      <DependentUpon>ProductionIndexQueryUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PowerMeter\WODataImport.xaml.cs">
       <DependentUpon>WODataImport.xaml</DependentUpon>
@@ -338,7 +349,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Automation\ProductionIndexQueryAutomation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Automation\WODataImportAutomation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PowerMeter\EIP_MO_CheckWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PowerMeter\ProductionIndexQueryUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

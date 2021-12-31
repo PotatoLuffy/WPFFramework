@@ -32,8 +32,10 @@ namespace EIPMonitor.ViewModel.NavigationBar
                     typeof(Welcome)
 
                 ),
-                new NavigationItem("WODataImport",typeof(WODataImport)),
-                new NavigationItem("WODataImportAutomation",typeof(WODataImportAutomation))
+                new NavigationItem("[电能表]工单同步",typeof(WODataImport)),
+                new NavigationItem("[电能表]工单查询",typeof(ProductionIndexQueryUserControl)),
+                new NavigationItem("[自动化]工单同步",typeof(WODataImportAutomation)),
+                new NavigationItem("[自动化]工单查询",typeof(ProductionIndexQueryAutomation))
             }) ;
             eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
             //var items = GenerateNavigationItems(snackbarMessageQueue)?.OrderBy(i => i.Name)??null;
