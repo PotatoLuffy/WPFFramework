@@ -299,12 +299,16 @@
     <Compile Include="ViewDialog\LoginViewDialog.cs" />
     <Compile Include="ViewDialog\MainWindowDialog.cs" />
     <Compile Include="ViewModel\BaseViewDialog.cs" />
+    <Compile Include="ViewModel\Functions\WODataImportAutomationViewModel.cs" />
     <Compile Include="ViewModel\Functions\WOImportViewModel.cs" />
     <Compile Include="ViewModel\MessagesViewModels\SampleDialogViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\NavigationBar\NavigationItem.cs" />
     <Compile Include="ViewModel\SecurityModels\LoginViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="Views\Automation\WODataImportAutomation.xaml.cs">
+      <DependentUpon>WODataImportAutomation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PowerMeter\WODataImport.xaml.cs">
       <DependentUpon>WODataImport.xaml</DependentUpon>
     </Compile>
@@ -334,6 +338,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Automation\WODataImportAutomation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PowerMeter\WODataImport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

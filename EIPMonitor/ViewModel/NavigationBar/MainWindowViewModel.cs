@@ -1,6 +1,7 @@
 ﻿using EIPMonitor.DomainServices.MasterData;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
+using EIPMonitor.Views.Automation;
 using EIPMonitor.Views.PowerMeter;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
@@ -31,7 +32,8 @@ namespace EIPMonitor.ViewModel.NavigationBar
                     typeof(Welcome)
 
                 ),
-                new NavigationItem("WODataImport",typeof(WODataImport))
+                new NavigationItem("WODataImport",typeof(WODataImport)),
+                new NavigationItem("WODataImportAutomation",typeof(WODataImportAutomation))
             }) ;
             eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
             //var items = GenerateNavigationItems(snackbarMessageQueue)?.OrderBy(i => i.Name)??null;

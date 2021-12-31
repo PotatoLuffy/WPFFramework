@@ -1,20 +1,20 @@
-﻿<UserControl x:Class="EIPMonitor.Views.PowerMeter.WODataImport"
+﻿<UserControl x:Class="EIPMonitor.Views.Automation.WODataImportAutomation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EIPMonitor.Views.PowerMeter"
+             xmlns:local="clr-namespace:EIPMonitor.Views.Automation"
              xmlns:viewModel="clr-namespace:EIPMonitor.ViewModel.Functions"
-             d:DataContext="{d:DesignInstance viewModel:WOImportViewModel}"
-             mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="568" d:DesignWidth="800" Background="White">
+             d:DataContext="{d:DesignInstance viewModel:WODataImportAutomationViewModel}"
+             mc:Ignorable="d" 
+             
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <ScrollViewer  materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" HorizontalScrollBarVisibility="{Binding SelectedItem.HorizontalScrollBarVisibilityRequirement, FallbackValue=Disabled}" VerticalScrollBarVisibility="{Binding SelectedItem.VerticalScrollBarVisibilityRequirement, FallbackValue=Disabled}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="51" MaxHeight="51"  MinHeight="51"/>
                 <RowDefinition Height="46" MaxHeight="46" MinHeight="46"/>
-                <RowDefinition Height="47*" MinHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
@@ -62,44 +62,45 @@
                 <TextBlock Text="耐压 同步" />
             </Button>
             <TextBox x:Name="HighVoltageInsulationTestTextBlock" Text="{Binding HighVoltageInsulationTestTextBlock, Mode=TwoWay}" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="耐压 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-
+            
             <Button Grid.Row="5" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <Button x:Name="IntrinsicErrorButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 基本误差 同步">
-                <TextBlock Text="基本误差 同步" />
+            <Button x:Name="AutomationButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+                    ToolTip="步骤5 自动化交流 同步">
+                <TextBlock Text="自动化交流 同步" />
             </Button>
-            <TextBox x:Name="IntrinsicErrorTextBlock" Text="{Binding IntrinsicErrorTextBlock, Mode=TwoWay}" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="AutomationTextBlock" Text="{Binding IntrinsicErrorDetailTextBlock, Mode=TwoWay}" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
+                     materialDesign:HintAssist.Hint="自动化交流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="6" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <Button x:Name="IntrinsicErrorDetailButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 基本误差详情 同步">
-                <TextBlock Text="基本误差详情 同步" />
+            <Button x:Name="AutomationConnectionChannelButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+                    ToolTip="步骤5 自动化信道 同步">
+                <TextBlock Text="自动化信道 同步" />
             </Button>
-            <TextBox x:Name="IntrinsicErrorDetailTextBlock" Text="{Binding IntrinsicErrorDetailTextBlock, Mode=TwoWay}" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差详情 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="AutomationConnectionChannelTextBlock" Text="{Binding DailyTimingErrorTextBlock, Mode=TwoWay}" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
+                     materialDesign:HintAssist.Hint="自动化信道 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <Button x:Name="DailyTimingErrorButton" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤5 日计时 同步">
-                <TextBlock Text="日计时 同步" />
+            <Button Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
+            <Button x:Name="AutomationParameterButton" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+                    ToolTip="步骤6 自动化参数设置 同步">
+                <TextBlock Text="自动化参数设置 同步" />
             </Button>
-            <TextBox x:Name="DailyTimingErrorTextBlock" Text="{Binding DailyTimingErrorTextBlock, Mode=TwoWay}" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="日计时 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="AutomationParameterTextBlock" Text="{Binding ParameterSettingTextBlock, Mode=TwoWay}" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
+                     materialDesign:HintAssist.Hint="自动化参数设置 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
-            <Button x:Name="ParameterSettingButton" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤6 参数设置 同步">
-                <TextBlock Text="参数设置 同步" />
-            </Button>
-            <TextBox x:Name="ParameterSettingTextBlock" Text="{Binding ParameterSettingTextBlock, Mode=TwoWay}" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="参数设置 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-
-            <Button Grid.Row="9" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
-            <Button x:Name="ProductionStoreButton" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤7 成品入库 同步">
+            <Button Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
+            <Button x:Name="ProductionStoreButton" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+                    ToolTip="步骤7 成品入库 同步">
                 <TextBlock Text="成品入库 同步" />
             </Button>
-            <TextBox x:Name="ProductionStoreTextBlock" Text="{Binding ProductionStoreTextBlock, Mode=TwoWay}" Grid.Row="9" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="成品入库 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="ProductionStoreTextBlock" Text="{Binding ProductionStoreTextBlock, Mode=TwoWay}" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="成品入库 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click" materialDesign:ButtonAssist.CornerRadius="10" Grid.Row="10" Grid.ColumnSpan="6" ToolTip="同步完成后,点击此按钮,实时更新计算分数，也可以不同步直接点击">
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click" materialDesign:ButtonAssist.CornerRadius="9" Grid.Row="10" Grid.ColumnSpan="6" ToolTip="同步完成后,点击此按钮,实时更新计算分数，也可以不同步直接点击">
                 <TextBlock Text="计算分数" />
             </Button>
 
-            <DataGrid Grid.Row="11" Grid.ColumnSpan="6" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
-            <DataGrid Grid.Row="12" Grid.ColumnSpan="6" ItemsSource="{Binding Details}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
-
+            <DataGrid Grid.Row="10" Grid.ColumnSpan="6" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
+            <DataGrid Grid.Row="11" Grid.ColumnSpan="6" ItemsSource="{Binding Details}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
         </Grid>
     </ScrollViewer>
+
 </UserControl>

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.ViewModel.Functions
 {
-    public class WOImportViewModel:ViewModelBase
+    public class WODataImportAutomationViewModel : ViewModelBase
     {
         private String eIP_CAL_MO_SCORE_CurrentVersion = null;
         private readonly IReadOnlyDictionary<String, String> btnProcedureMapper = new Dictionary<String, String>()
@@ -29,9 +29,9 @@ namespace EIPMonitor.ViewModel.Functions
                     { "BatteryCurrentButton","exec [dbo].[CL_SGCCPRD_PP_TEST_BATCUR_SAVE] @IPONO "},
                     { "FuncionTestButton","exec [dbo].[CL_SGCCPRD_PP_TEST_FCT_SAVE] @IPONO "},
                     { "AOITestButton","exec [dbo].[CL_SGCCPRD_PP_TEST_PCBAOI_SAVE] @IPONO "},
-                    //{ "AutomationButton", "exec [dbo].[CL_SGCCPRD_EXP_PRO_ACAVALUE_AUTO_SAVE] @IPONO " },
-                    //{ "AutomationConnectionChannelButton"," exec [dbo].CL_SGCCPRD_EXP_PRO_CCTEST_AUTO_SAVE @IPONO "},
-                    //{ "AutomationParameterButton", "exec [dbo].CL_SGCCPRD_EXP_PRO_PARAMSET_AUTO_SAVE @IPONO "},
+                    { "AutomationButton", "exec [dbo].[CL_SGCCPRD_EXP_PRO_ACAVALUE_AUTO_SAVE] @IPONO " },
+                    { "AutomationConnectionChannelButton"," exec [dbo].CL_SGCCPRD_EXP_PRO_CCTEST_AUTO_SAVE @IPONO "},
+                    { "AutomationParameterButton", "exec [dbo].CL_SGCCPRD_EXP_PRO_PARAMSET_AUTO_SAVE @IPONO "},
                     { "ProductionStoreButton", "exec [dbo].[CL_SGCCPRD_PRODUCTSTORAGE_SAVE] @IPONO "  }
                 };
         private string _HighVoltageInsulationTestTextBlock;
@@ -52,7 +52,7 @@ namespace EIPMonitor.ViewModel.Functions
         private string _materialCodeTextbox;
         private string _materialNameTextbox;
 
-        public String HighVoltageInsulationTestTextBlock { get=> _HighVoltageInsulationTestTextBlock; set=>SetProperty(ref _HighVoltageInsulationTestTextBlock,value); }
+        public String HighVoltageInsulationTestTextBlock { get => _HighVoltageInsulationTestTextBlock; set => SetProperty(ref _HighVoltageInsulationTestTextBlock, value); }
         public String IntrinsicErrorTextBlock { get => _IntrinsicErrorTextBlock; set => SetProperty(ref _IntrinsicErrorTextBlock, value); }
         public String IntrinsicErrorDetailTextBlock { get => _IntrinsicErrorDetailTextBlock; set => SetProperty(ref _IntrinsicErrorDetailTextBlock, value); }
         public String DailyTimingErrorTextBlock { get => _DailyTimingErrorTextBlock; set => SetProperty(ref _DailyTimingErrorTextBlock, value); }
@@ -64,13 +64,11 @@ namespace EIPMonitor.ViewModel.Functions
         public String AutomationConnectionChannelTextBlock { get => _AutomationConnectionChannelTextBlock; set => SetProperty(ref _AutomationConnectionChannelTextBlock, value); }
         public String AutomationParameterTextBlock { get => _AutomationParameterTextBlock; set => SetProperty(ref _AutomationParameterTextBlock, value); }
         public String ProductionStoreTextBlock { get => _ProductionStoreTextBlock; set => SetProperty(ref _ProductionStoreTextBlock, value); }
-        
+
         public String MOQtyRequirement { get => _MOQtyRequirement; set => _MOQtyRequirement = value; }
         public String materialCodeTextbox { get => _materialCodeTextbox; set => _materialCodeTextbox = value; }
         public String materialNameTextbox { get => _materialNameTextbox; set => _materialNameTextbox = value; }
         public String moName { get => _moName; set => _moName = value; }
-        public List<MES_MO_TO_EIP_POOL> MES_MO_TO_EIP_POOLs { get => mES_MO_TO_EIP_POOLs; set => SetProperty(ref mES_MO_TO_EIP_POOLs, value); }
-        public List<ZCL_SIMUL_D> Details { get => details; set => SetProperty(ref details, value); }
         private readonly IReadOnlyDictionary<String, Action<String>> btnCommentMapper;
         private readonly GenericExecutionService<ZGW_MO_T> genericExecutionService = new GenericExecutionService<ZGW_MO_T>();
         private IEIP_PRO_GlobalParamConfigureService eIP_PRO_GlobalParamConfigureService;
@@ -83,7 +81,10 @@ namespace EIPMonitor.ViewModel.Functions
         private List<ZCL_SIMUL_D> details;
         private List<MES_MO_TO_EIP_POOL> mES_MO_TO_EIP_POOLs;
         private readonly string woVerifySqlText = "select * from ZGW_MO_T where IPONO = :IPONO and rownum = 1";
-        public WOImportViewModel()
+
+        public List<MES_MO_TO_EIP_POOL> MES_MO_TO_EIP_POOLs { get => mES_MO_TO_EIP_POOLs; set => SetProperty(ref mES_MO_TO_EIP_POOLs, value); }
+        public List<ZCL_SIMUL_D> Details { get => details; set => SetProperty(ref details, value); }
+        public WODataImportAutomationViewModel()
         {
             eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
 
@@ -97,9 +98,9 @@ namespace EIPMonitor.ViewModel.Functions
                                                                                 { "BatteryCurrentButton",(string msg)=> this.BatteryCurrentTextBlock = msg },
                                                                                 { "FuncionTestButton",(string msg)=> this.FuncionTestTextBlock = msg },
                                                                                 { "AOITestButton",(string msg)=> this.AOITestTextBlock = msg },
-                                                                                //{ "AutomationButton",this.AutomationTextBlock },
-                                                                                //{ "AutomationConnectionChannelButton",this.AutomationConnectionChannelTextBlock },
-                                                                                //{ "AutomationParameterButton",this.AutomationParameterTextBlock },
+                                                                                { "AutomationButton",(string msg)=> this.AutomationTextBlock = msg },
+                                                                                { "AutomationConnectionChannelButton",(string msg)=> this.AutomationConnectionChannelTextBlock = msg },
+                                                                                { "AutomationParameterButton",(string msg)=> this.AutomationParameterTextBlock = msg },
                                                                                 { "ProductionStoreButton",(string msg)=> this.ProductionStoreTextBlock = msg }
                                                                             };
         }
@@ -150,9 +151,9 @@ namespace EIPMonitor.ViewModel.Functions
         }
         public async Task<ZGW_MO_T> VerifyTheMOName()
         {
-            if (!moName.StartsWith("5") && !LocalConstant.IsAdmin)
+            if (!moName.StartsWith("6") && !LocalConstant.IsAdmin)
             {
-                Messenger.Default.Send("请输入以5开头的电能表工单。", "SendMessageToMainWin");
+                Messenger.Default.Send("请输入以6开头的电能表工单。", "SendMessageToMainWin");
                 return null;
             }
             ZGW_MO_T workOrder = new ZGW_MO_T() { IPONO = moName };
@@ -203,7 +204,7 @@ namespace EIPMonitor.ViewModel.Functions
             catch (Exception e1)
             {
                 LocalConstant.Logger.Debug("AppDomainUnhandledExceptionHandler", e1);
-                this.materialNameTextbox = "该工单不是一个电能表工单";
+                this.materialNameTextbox = "该工单不是一个自动化工单";
             }
         }
         private void CleanAllTheCommentTextBlock()
@@ -232,6 +233,5 @@ namespace EIPMonitor.ViewModel.Functions
             }
             mES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
         }
-
     }
 }
