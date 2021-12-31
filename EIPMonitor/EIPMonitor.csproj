@@ -180,6 +180,7 @@
     <Compile Include="Domain.CustomException\TheSecurityStampCanNotBeEmptyException.cs" />
     <Compile Include="DomainService\EIP_Monitor_LogCreateService.cs" />
     <Compile Include="DomainService\ExcelGeneratorService\TemplateGenerator.cs" />
+    <Compile Include="DomainService\IRequestLimitControlService.cs" />
     <Compile Include="DomainService\MasterData\EIP_PRO_GlobalParamConfigureService.cs" />
     <Compile Include="DomainService\MasterData\EM_EXP_PRO_PARAMSETCreateService.cs" />
     <Compile Include="DomainService\MasterData\IEIP_PRO_GlobalParamConfigureService.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="DomainService\MasterData\ZGW_MO_TYPECreateService.cs" />
     <Compile Include="DomainService\OracleProcedureService\ProcedureGenericService.cs" />
     <Compile Include="DomainService\ProductionIndex\ProductionIndexService.cs" />
+    <Compile Include="DomainService\RequestLimitControlService.cs" />
     <Compile Include="DomainService\SecurityServices\FunctionServices\EIP_MONITOR_PAGECreateService.cs" />
     <Compile Include="DomainService\SecurityServices\FunctionServices\EIP_MONITOR_PAGEDeleteService.cs" />
     <Compile Include="DomainService\SecurityServices\FunctionServices\EIP_MONITOR_PAGESearchService.cs" />

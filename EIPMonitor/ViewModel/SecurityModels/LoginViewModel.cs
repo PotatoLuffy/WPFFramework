@@ -88,22 +88,22 @@ namespace EIPMonitor.ViewModel.SecurityModels
             try
             {
                 this.Login();
-                //var result = await iEIPProductionIndexUsersLogin.Login(this.User).ConfigureAwait(false);
-                //if (result == null)
-                //{
-                //    Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
-                //    return;
-                //}
-                EIPProductionIndexUsers result = null;
+                var resultTask = iEIPProductionIndexUsersLogin.Login(this.User);
+                resultTask.Wait();
+                if (resultTask.Result == null)
+                {
+                    Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
+                    return;
+                }
                 var userStamp = IocKernel.Get<IUserStamp>();
-                userStamp.UserName = result?.UserName??"123";
-                userStamp.EmployeeId = result?.EmployeeId??"123";
+                userStamp.UserName = resultTask.Result.UserName;
+                userStamp.EmployeeId = resultTask.Result.EmployeeId;
                 //Messenger.Default.Send("验证成功准备登录。", "SendMessageToLoginWin");
                 
                 var dialog = IocKernel.Get<IModelDialog>("MainWindowDialog");
                 dialog.BindDefaultViewModel();
                 Messenger.Default.Send(String.Empty, "ApplicationHiding");
-                var resultTask = dialog.ShowDialog();
+                var mainWin = dialog.ShowDialog();
                 //Messenger.Default.Send("开始加载", "SendMessageToMainWin");
                 
                 this.ApplicationShutdown();

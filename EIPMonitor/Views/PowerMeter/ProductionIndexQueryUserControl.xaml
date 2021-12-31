@@ -42,6 +42,11 @@
                       SelectionChanged="ProductionIndexMain_SelectionChanged" 
                         CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" 
                       Grid.RowSpan="2" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="Copy" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
             <materialDesign:Card Background="{DynamicResource MaterialDesignDarkSeparatorBackground}" Foreground="{DynamicResource MaterialDesignLightForeground}"
                 Grid.Row="3" Grid.ColumnSpan="7" Padding="13" VerticalAlignment="Center" >
@@ -53,7 +58,11 @@
                       AutoGeneratingColumn="ProductionIndexDatagrid_AutoGeneratingColumn" 
                       ItemsSource="{Binding SelectedDetails}"
                       >
-
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="Copy" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
 
 

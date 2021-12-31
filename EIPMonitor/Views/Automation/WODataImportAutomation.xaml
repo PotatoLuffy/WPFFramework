@@ -23,7 +23,9 @@
                 <RowDefinition Height="47*" MinHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MaxHeight="47"/>
                 <RowDefinition Height="47*" MinHeight="47"/>
+                <RowDefinition Height="47*" MaxHeight="47"/>
                 <RowDefinition Height="47*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -97,9 +99,28 @@
             <Button Style="{StaticResource MaterialDesignRaisedButton}" Click="Button_Click" materialDesign:ButtonAssist.CornerRadius="9" Grid.Row="10" Grid.ColumnSpan="6" ToolTip="同步完成后,点击此按钮,实时更新计算分数，也可以不同步直接点击">
                 <TextBlock Text="计算分数" />
             </Button>
-
-            <DataGrid Grid.Row="10" Grid.ColumnSpan="6" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
-            <DataGrid Grid.Row="11" Grid.ColumnSpan="6" ItemsSource="{Binding Details}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" />
+            <materialDesign:Card Background="{DynamicResource MaterialDesignDarkSeparatorBackground}" Foreground="{DynamicResource MaterialDesignLightForeground}"
+                Grid.Row="10" Grid.ColumnSpan="6" Padding="13" VerticalAlignment="Center" >
+                <TextBlock FontSize="16" HorizontalAlignment="Center" Text="工单总评分" />
+            </materialDesign:Card>
+            <DataGrid Grid.Row="11" Grid.ColumnSpan="6" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" >
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="Copy" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            <materialDesign:Card Background="{DynamicResource MaterialDesignDarkSeparatorBackground}" Foreground="{DynamicResource MaterialDesignLightForeground}"
+                Grid.Row="12" Grid.ColumnSpan="6" Padding="13" VerticalAlignment="Center" >
+                <TextBlock FontSize="16" HorizontalAlignment="Center" Text="工单总评分" />
+            </materialDesign:Card>
+            <DataGrid Grid.Row="13" Grid.ColumnSpan="6" ItemsSource="{Binding Details}" IsReadOnly="True" CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" >
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="Copy" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
         </Grid>
     </ScrollViewer>
 

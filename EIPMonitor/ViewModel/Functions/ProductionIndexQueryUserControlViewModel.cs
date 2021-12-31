@@ -30,7 +30,7 @@ namespace EIPMonitor.ViewModel.Functions
         public List<ZCL_SIMUL_D> SelectedDetails { get => selectedDetails; set => SetProperty(ref selectedDetails, value); }
         private string workOrderFromTextBox;
         private string workOrderToTextBox;
-        public string WorkOrderFromTextBox { get => workOrderFromTextBox; set => SetProperty(ref workOrderToTextBox, value); }
+        public string WorkOrderFromTextBox { get => workOrderFromTextBox; set => SetProperty(ref workOrderFromTextBox, value); }
         public string WorkOrderToTextBox { get => workOrderToTextBox; set => SetProperty(ref workOrderToTextBox, value); }
         public List<string> CopiedOrders { get; set; }
         private readonly char startLetter = (LocalConstant.IsAdmin ? '%' : '5');
@@ -52,7 +52,8 @@ namespace EIPMonitor.ViewModel.Functions
                 }
                 var ifBeginOrder = Int32.TryParse(workOrderFromTextBox, out Int32 beginO);
                 var ifEndOrder = Int32.TryParse(workOrderToTextBox, out Int32 enDO);
-                Details = await zCL_SIMUL_DService.GetEntries(ifBeginOrder ? workOrderFromTextBox : workOrderToTextBox, ifEndOrder ? workOrderToTextBox : workOrderFromTextBox, null, startLetter).ConfigureAwait(true);
+
+                await GetScoresAndDetail(ifBeginOrder ? workOrderFromTextBox : workOrderToTextBox, ifEndOrder ? workOrderToTextBox : workOrderFromTextBox, null).ConfigureAwait(false);
 
                 if (Details == null || Details.Count <= 0)
                 {
@@ -71,17 +72,17 @@ namespace EIPMonitor.ViewModel.Functions
         private async Task GetScoresAndDetail(string beginOrder,string endOrder,List<string> orders)
         {
             Details = await zCL_SIMUL_DService.GetEntries(beginOrder, endOrder, orders, startLetter).ConfigureAwait(true);
-            this.mES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
+            this.MES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
         }
         private async Task CreateScoresToDB(List<MES_MO_TO_EIP_POOL> mES_MO_TO_EIP_POOLsPara)
         {
-            var uploadedEntries = await mES_MO_TO_EIP_POOLSearchService.GeMES_MO_TO_EIP_POOL(mES_MO_TO_EIP_POOLs).ConfigureAwait(true);
+            if ((mES_MO_TO_EIP_POOLsPara?.Count??0) <= 0) return;
+            var uploadedEntries = await mES_MO_TO_EIP_POOLSearchService.GeMES_MO_TO_EIP_POOL(mES_MO_TO_EIP_POOLsPara).ConfigureAwait(true);
             foreach (var el in uploadedEntries)
             {
-                var inx = mES_MO_TO_EIP_POOLs.FindIndex(f => f.Equals(el));
-                mES_MO_TO_EIP_POOLs[inx].ExistsFlag = el.ExistsFlag;
+                var inx = mES_MO_TO_EIP_POOLsPara.FindIndex(f => f.Equals(el));
+                mES_MO_TO_EIP_POOLsPara[inx].ExistsFlag = el.ExistsFlag;
             }
-            this.MES_MO_TO_EIP_POOLs = mES_MO_TO_EIP_POOLs.OrderBy(o => o.SCORE).ToList();
             await CreateMES_MO_TO_EIP_POOL().ConfigureAwait(false);
         }
         public async Task GetSelectedEntryDetails(MES_MO_TO_EIP_POOL mES_MO_TO_EIP_POOL)

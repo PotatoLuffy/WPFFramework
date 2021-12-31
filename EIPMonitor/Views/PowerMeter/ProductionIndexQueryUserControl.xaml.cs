@@ -1,5 +1,8 @@
-﻿using EIPMonitor.Model.MasterData;
+﻿using EIPMonitor.DomainService;
+using EIPMonitor.LocalInfrastructure;
+using EIPMonitor.Model.MasterData;
 using EIPMonitor.ViewModel.Functions;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,11 +28,13 @@ namespace EIPMonitor.Views.PowerMeter
     public partial class ProductionIndexQueryUserControl : UserControl
     {
         private ProductionIndexQueryUserControlViewModel productionIndexQueryUserControlViewModel;
+        private IRequestLimitControlService requestLimitControlService;
         public ProductionIndexQueryUserControl()
         {
             InitializeComponent();
             productionIndexQueryUserControlViewModel = new ProductionIndexQueryUserControlViewModel();
             DataContext = productionIndexQueryUserControlViewModel;
+            requestLimitControlService = IocKernel.Get<IRequestLimitControlService>();
         }
         private void ProductionIndexDatagrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -84,27 +89,81 @@ namespace EIPMonitor.Views.PowerMeter
         }
         private async void ProductionIndexMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var datagrid = e.Source as DataGrid;
-            if (datagrid == null) return;
-            var mapperSource = datagrid.SelectedItem as MES_MO_TO_EIP_POOL;
-            if (mapperSource == null) return;
-            await productionIndexQueryUserControlViewModel.GetSelectedEntryDetails(mapperSource).ConfigureAwait(true);
+            try
+            {
+                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
+                if (!getThePermission)
+                {
+                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                    return;
+                }
+                var datagrid = e.Source as DataGrid;
+                if (datagrid == null) return;
+                var mapperSource = datagrid.SelectedItem as MES_MO_TO_EIP_POOL;
+                if (mapperSource == null) return;
+                await productionIndexQueryUserControlViewModel.GetSelectedEntryDetails(mapperSource).ConfigureAwait(true);
+            }
+            finally
+            {
+                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
+            }
         }
         private async void workOrderFromTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+            try
+            {
+                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "workOrderFromTextBox");
+                if (!getThePermission)
+                {
+                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                    return;
+                }
+                await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+            }
+            finally
+            {
+                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "workOrderFromTextBox");
+            }
         }
         private async void productIndexQueryButton_Click(object sender, RoutedEventArgs e)
         {
-            await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+            var button = sender as Button;
+            try
+            {
+                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
+                if (!getThePermission)
+                {
+                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                    return;
+                }
+                await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+            }
+            finally
+            {
+                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, button.Name);
+            }
         }
         private void pastedMultipleOrderButton_Click(object sender, RoutedEventArgs e)
         {
-            string workorders = System.Windows.Clipboard.GetText();
-            if (string.IsNullOrWhiteSpace(workorders)) return;
-            productionIndexQueryUserControlViewModel.CopiedOrders = workorders.Split(new String[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Distinct().OrderBy(o=>o).ToList();
-            productionIndexQueryUserControlViewModel.WorkOrderFromTextBox = productionIndexQueryUserControlViewModel.CopiedOrders.DefaultIfEmpty().FirstOrDefault();
-            productionIndexQueryUserControlViewModel.WorkOrderToTextBox = productionIndexQueryUserControlViewModel.CopiedOrders.DefaultIfEmpty().LastOrDefault();
+            var button = sender as Button;
+            try
+            {
+                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
+                if (!getThePermission)
+                {
+                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                    return;
+                }
+                string workorders = System.Windows.Clipboard.GetText();
+                if (string.IsNullOrWhiteSpace(workorders)) return;
+                productionIndexQueryUserControlViewModel.CopiedOrders = workorders.Split(new String[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Distinct().OrderBy(o => o).ToList();
+                productionIndexQueryUserControlViewModel.WorkOrderFromTextBox = productionIndexQueryUserControlViewModel.CopiedOrders.DefaultIfEmpty().FirstOrDefault();
+                productionIndexQueryUserControlViewModel.WorkOrderToTextBox = productionIndexQueryUserControlViewModel.CopiedOrders.DefaultIfEmpty().LastOrDefault();
+            }
+            finally
+            {
+                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, button.Name);
+            }
         }
     }
 }

@@ -224,14 +224,14 @@ namespace EIPMonitor.ViewModel.Functions
             EIP_CAL_MO_SCOREParameter eIP_CAL_MO_SCOREParameter = new EIP_CAL_MO_SCOREParameter() { pI_Method = PI_Method.Calculate_Specific_Mo_Score, PI_Mo = moName };
             var calculatedScore = await cRUDService.Create<EIP_CAL_MO_SCOREParameter>($"call {eIP_CAL_MO_SCORE_CurrentVersion}(:pI_Method,:PI_Mo)", eIP_CAL_MO_SCOREParameter).ConfigureAwait(true);
 
-            details = await zCL_SIMUL_DService.GetEntries(eIP_CAL_MO_SCOREParameter.PI_Mo, eIP_CAL_MO_SCOREParameter.PI_Mo, null, '5').ConfigureAwait(true);
+            this.Details = await zCL_SIMUL_DService.GetEntries(eIP_CAL_MO_SCOREParameter.PI_Mo, eIP_CAL_MO_SCOREParameter.PI_Mo, null, '5').ConfigureAwait(true);
 
             if (details == null || details.Count == 0)
             {
                 Messenger.Default.Send("未找到任何数据。", "SendMessageToMainWin");
                 return;
             }
-            mES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
+            this.MES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
         }
     }
 }

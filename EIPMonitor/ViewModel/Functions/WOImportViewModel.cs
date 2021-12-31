@@ -65,10 +65,10 @@ namespace EIPMonitor.ViewModel.Functions
         public String AutomationParameterTextBlock { get => _AutomationParameterTextBlock; set => SetProperty(ref _AutomationParameterTextBlock, value); }
         public String ProductionStoreTextBlock { get => _ProductionStoreTextBlock; set => SetProperty(ref _ProductionStoreTextBlock, value); }
         
-        public String MOQtyRequirement { get => _MOQtyRequirement; set => _MOQtyRequirement = value; }
-        public String materialCodeTextbox { get => _materialCodeTextbox; set => _materialCodeTextbox = value; }
-        public String materialNameTextbox { get => _materialNameTextbox; set => _materialNameTextbox = value; }
-        public String moName { get => _moName; set => _moName = value; }
+        public String MOQtyRequirement { get => _MOQtyRequirement; set => SetProperty(ref _MOQtyRequirement, value); }
+        public String materialCodeTextbox { get => _materialCodeTextbox; set => SetProperty(ref _materialCodeTextbox, value); }
+        public String materialNameTextbox { get => _materialNameTextbox; set => SetProperty(ref _materialNameTextbox, value); }
+        public String moName { get => _moName; set =>SetProperty(ref _moName, value); }
         public List<MES_MO_TO_EIP_POOL> MES_MO_TO_EIP_POOLs { get => mES_MO_TO_EIP_POOLs; set => SetProperty(ref mES_MO_TO_EIP_POOLs, value); }
         public List<ZCL_SIMUL_D> Details { get => details; set => SetProperty(ref details, value); }
         private readonly IReadOnlyDictionary<String, Action<String>> btnCommentMapper;
@@ -217,20 +217,20 @@ namespace EIPMonitor.ViewModel.Functions
         {
             if (String.IsNullOrWhiteSpace(eIP_CAL_MO_SCORE_CurrentVersion))
             {
-                var config = await eIP_PRO_GlobalParamConfigureService.ExtractConfiguration(Model.MasterData.EIP_PRO_GlobalParameter.EIP_CAL_MO_SCORE_CurrentVersion).ConfigureAwait(true);
+                var config = await eIP_PRO_GlobalParamConfigureService.ExtractConfiguration(Model.MasterData.EIP_PRO_GlobalParameter.EIP_CAL_MO_SCORE_CurrentVersion).ConfigureAwait(false);
                 eIP_CAL_MO_SCORE_CurrentVersion = config.Parameter;
             }
             EIP_CAL_MO_SCOREParameter eIP_CAL_MO_SCOREParameter = new EIP_CAL_MO_SCOREParameter() { pI_Method = PI_Method.Calculate_Specific_Mo_Score, PI_Mo = moName };
-            var calculatedScore = await cRUDService.Create<EIP_CAL_MO_SCOREParameter>($"call {eIP_CAL_MO_SCORE_CurrentVersion}(:pI_Method,:PI_Mo)", eIP_CAL_MO_SCOREParameter).ConfigureAwait(true);
+            var calculatedScore = await cRUDService.Create<EIP_CAL_MO_SCOREParameter>($"call {eIP_CAL_MO_SCORE_CurrentVersion}(:pI_Method,:PI_Mo)", eIP_CAL_MO_SCOREParameter).ConfigureAwait(false);
 
-            details = await zCL_SIMUL_DService.GetEntries(eIP_CAL_MO_SCOREParameter.PI_Mo, eIP_CAL_MO_SCOREParameter.PI_Mo, null, '5').ConfigureAwait(true);
+            this.Details = await zCL_SIMUL_DService.GetEntries(eIP_CAL_MO_SCOREParameter.PI_Mo, eIP_CAL_MO_SCOREParameter.PI_Mo, null, '5').ConfigureAwait(false);
 
             if (details == null || details.Count == 0)
             {
                 Messenger.Default.Send("未找到任何数据。", "SendMessageToMainWin");
                 return;
             }
-            mES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
+            this.MES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
         }
 
     }

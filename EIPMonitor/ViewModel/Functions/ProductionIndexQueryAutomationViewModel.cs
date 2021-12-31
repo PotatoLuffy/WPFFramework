@@ -51,7 +51,7 @@ namespace EIPMonitor.ViewModel.Functions
                 }
                 var ifBeginOrder = Int32.TryParse(workOrderFromTextBox, out Int32 beginO);
                 var ifEndOrder = Int32.TryParse(workOrderToTextBox, out Int32 enDO);
-                Details = await zCL_SIMUL_DService.GetEntries(ifBeginOrder ? workOrderFromTextBox : workOrderToTextBox, ifEndOrder ? workOrderToTextBox : workOrderFromTextBox, null, startLetter).ConfigureAwait(true);
+                await GetScoresAndDetail(ifBeginOrder ? workOrderFromTextBox : workOrderToTextBox, ifEndOrder ? workOrderToTextBox : workOrderFromTextBox, null).ConfigureAwait(false);
 
                 if (Details == null || Details.Count <= 0)
                 {

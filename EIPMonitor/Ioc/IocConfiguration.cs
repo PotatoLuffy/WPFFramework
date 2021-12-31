@@ -1,4 +1,5 @@
-﻿using EIPMonitor.DomainServices.MasterData;
+﻿using EIPMonitor.DomainService;
+using EIPMonitor.DomainServices.MasterData;
 using EIPMonitor.DomainServices.UserService;
 using EIPMonitor.IDomainService;
 using EIPMonitor.LocalInfrastructure;
@@ -25,6 +26,7 @@ namespace EIPMonitor.Ioc
             IocKernel.UnityContainer.RegisterSingleton<IUserStamp, UserStamp>();
             IocKernel.UnityContainer.RegisterSingleton<IEIP_PRO_GlobalParamConfigureService, EIP_PRO_GlobalParamConfigureService>();
             IocKernel.UnityContainer.RegisterSingleton<IEIPProductionIndexUsersLogin, EIPProductionIndexUsersLogin>();
+            IocKernel.UnityContainer.RegisterSingleton<IRequestLimitControlService, RequestLimitControlService>();
             IocKernel.UnityContainer.RegisterType<IModelDialog, LoginViewDialog>("LoginViewDialog");
             IocKernel.UnityContainer.RegisterType<IModelDialog, MainWindowDialog>("MainWindowDialog");
         }
