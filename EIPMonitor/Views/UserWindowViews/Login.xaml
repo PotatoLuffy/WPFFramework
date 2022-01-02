@@ -47,7 +47,7 @@
                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
                          PasswordChanged ="pass_PasswordChanged" >
             </PasswordBox>
-            <Button Grid.Row="4" Content="登录" VerticalAlignment="Center" IsEnabled="True" HorizontalAlignment="Center" Width="180" Command="{Binding SignCommand, IsAsync=True}"/>
+            <Button Grid.Row="4" Content="登录" VerticalAlignment="Center" IsEnabled="True" HorizontalAlignment="Center" Width="180" Click="Button_Click" />
             <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"  Grid.Row="5"/>
         </Grid>
     </Grid>

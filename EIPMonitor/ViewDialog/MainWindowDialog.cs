@@ -48,10 +48,8 @@ namespace EIPMonitor.ViewDialog
             Messenger.Default.Register<string>(GetWindowDialog(), "MainWindowShutdown", new Action<String>((arg) => { Application.Current.Shutdown(); Environment.Exit(0); }));
             Messenger.Default.Register<string>(GetWindowDialog(), "SendMessageToMainWin", new Action<String>((msg) =>
             {
-                var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
                 var obj = GetWindowDialog();
-                TaskFactory taskFactory = new TaskFactory(taskScheduler);
-                taskFactory.StartNew(()=> (obj as MainWindow).MainSnackbar.MessageQueue?.Enqueue(msg));
+                (obj as MainWindow).MainSnackbar.MessageQueue?.Enqueue(msg);
             }));
             
         }

@@ -1,8 +1,10 @@
-﻿using EIPMonitor.DomainServices.UserService;
+﻿using EIPMonitor.DomainService;
+using EIPMonitor.DomainServices.UserService;
 using EIPMonitor.Ioc;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
 using EIPMonitor.ViewModel.SecurityModels;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +28,13 @@ namespace EIPMonitor.Views.UserWindowViews
     /// </summary>
     public partial class Login : Window
     {
-
+        private IRequestLimitControlService requestLimitControlService;
+        private readonly string className;
         public Login()
         {
             InitializeComponent();
+            requestLimitControlService = IocKernel.Get<IRequestLimitControlService>();
+            className = this.GetType().FullName;
         }
 
 
@@ -50,6 +55,24 @@ namespace EIPMonitor.Views.UserWindowViews
         {
             this.Hide();
             Application.Current.Shutdown();
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            string btnName = button.Name;
+            var getThePermission = requestLimitControlService.RequestClickPermission(className, btnName);
+            if (!getThePermission)
+            {
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToLoginWin");
+                return;
+            }
+            var dataContext = this.DataContext as LoginViewModel;
+             await dataContext?.LoginAction().ContinueWith(t=> {
+                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, btnName);
+                if (t.IsFaulted)
+                    Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToLoginWin");              
+                    },TaskScheduler.FromCurrentSynchronizationContext());
         }
     }
 }

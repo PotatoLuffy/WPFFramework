@@ -57,7 +57,7 @@
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Infrastructure.Standard">
-      <HintPath>..\..\..\..\..\Net Packages\Standard\Infrastructure.Standard\Infrastructure.Standard.dll</HintPath>
+      <HintPath>..\packages\Infrastructure.Standard.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.13\lib\net45\log4net.dll</HintPath>
@@ -300,6 +300,7 @@
     <Compile Include="Transaction.Interface\Generic\IUpdateCommand.cs" />
     <Compile Include="ViewDialog\LoginViewDialog.cs" />
     <Compile Include="ViewDialog\MainWindowDialog.cs" />
+    <Compile Include="ViewModel.CustomException\LoginAuthenticatedFailureException.cs" />
     <Compile Include="ViewModel\BaseViewDialog.cs" />
     <Compile Include="ViewModel\Functions\ProductionIndexQueryAutomationViewModel.cs" />
     <Compile Include="ViewModel\Functions\ProductionIndexQueryUserControlViewModel.cs" />

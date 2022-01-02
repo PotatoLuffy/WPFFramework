@@ -3,6 +3,7 @@ using EIPMonitor.IDomainService;
 using EIPMonitor.Ioc;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
+using EIPMonitor.ViewModel.CustomException;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -21,29 +22,15 @@ namespace EIPMonitor.ViewModel.SecurityModels
         private string _name;
         private string _password;
         private IEIPProductionIndexUsersLogin iEIPProductionIndexUsersLogin;
-        private int loginButtonCnt = 0;
         public LoginViewModel()
         {
             eIPProductionIndexUsers = new EIPProductionIndexUsers();
             iEIPProductionIndexUsersLogin = IocKernel.Get<IEIPProductionIndexUsersLogin>();
-            Messenger.Default.Send("开始检查", "SendMessageToLoginWin");
         }
 
         public string Name { get => _name; set => SetProperty(ref _name, value); }
         public string Password { get => _password; set => SetProperty(ref _password, value); }
 
-        private RelayCommand _signCommand;
-        public RelayCommand SignCommand
-        {
-            get
-            {
-                if (_signCommand == null)
-                {
-                    _signCommand = new RelayCommand(()=>LoginAction());
-                }
-                return _signCommand;
-            }
-        }
         private RelayCommand _exitCommand;
 
         public RelayCommand ExitCommand
@@ -67,7 +54,7 @@ namespace EIPMonitor.ViewModel.SecurityModels
         }
         public bool CanLogin()
         {
-            return !String.IsNullOrEmpty(this._password) && !String.IsNullOrEmpty(this._name) && loginButtonCnt == 0;
+            return !String.IsNullOrEmpty(this._password) && !String.IsNullOrEmpty(this._name);
         }
         public void Login()
         {
@@ -78,26 +65,22 @@ namespace EIPMonitor.ViewModel.SecurityModels
         {
             Messenger.Default.Send(String.Empty, "ApplicationShutdown");
         }
-        public void LoginAction()
+        public async Task LoginAction()
         {
-            Interlocked.Increment(ref loginButtonCnt);
-            if (loginButtonCnt >= 1)
-            {
-                Messenger.Default.Send("正在验证用户,请勿重复点击。", "SendMessageToLoginWin");
-            }
             try
             {
                 this.Login();
-                var resultTask = iEIPProductionIndexUsersLogin.Login(this.User);
-                resultTask.Wait();
-                if (resultTask.Result == null)
-                {
-                    Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
-                    return;
-                }
+                Task<EIPProductionIndexUsers> resultTask = null;
+                //var resultTask = iEIPProductionIndexUsersLogin.Login(this.User);
+                //resultTask.Wait();
+                //if (resultTask.Result == null)
+                //{
+                //    throw new LoginAuthenticatedFailureException("用户名或者密码错误。");
+                //    //Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
+                //}
                 var userStamp = IocKernel.Get<IUserStamp>();
-                userStamp.UserName = resultTask.Result.UserName;
-                userStamp.EmployeeId = resultTask.Result.EmployeeId;
+                userStamp.UserName = resultTask?.Result.UserName??"123";
+                userStamp.EmployeeId = resultTask?.Result.EmployeeId??"123";
                 //Messenger.Default.Send("验证成功准备登录。", "SendMessageToLoginWin");
                 
                 var dialog = IocKernel.Get<IModelDialog>("MainWindowDialog");
@@ -110,11 +93,7 @@ namespace EIPMonitor.ViewModel.SecurityModels
             }
             catch (Exception e)
             {
-                Messenger.Default.Send("网络链接失败,请检查自己网络和服务器网络是否畅通。", "SendMessageToLoginWin");
-            }
-            finally
-            {
-                Interlocked.Decrement(ref loginButtonCnt);
+               throw new Exception("网络链接失败,请检查自己网络和服务器网络是否畅通。");
             }
         }
     }
