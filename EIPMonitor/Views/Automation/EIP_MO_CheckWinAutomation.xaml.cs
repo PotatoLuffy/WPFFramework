@@ -1,9 +1,7 @@
 ﻿using EIPMonitor.DomainService;
 using EIPMonitor.LocalInfrastructure;
-using EIPMonitor.Model;
 using EIPMonitor.ViewModel.Functions;
 using GalaSoft.MvvmLight.Messaging;
-using Infrastructure.Standard.Tool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,21 +19,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EIPMonitor.Views.PowerMeter
+namespace EIPMonitor.Views.Automation
 {
     /// <summary>
-    /// Interaction logic for EIP_MO_CheckWin.xaml
+    /// Interaction logic for EIP_MO_CheckWinAutomation.xaml
     /// </summary>
-    public partial class EIP_MO_CheckWin : UserControl
+    public partial class EIP_MO_CheckWinAutomation : UserControl
     {
         private IRequestLimitControlService requestLimitControlService;
-        private EIP_MO_CheckWinViewModel eIP_MO_CheckWinViewModel;
+        private EIP_MO_CheckWinAutomationViewModel eIP_MO_CheckWinViewModel;
         private readonly string className;
-        public EIP_MO_CheckWin()
+        public EIP_MO_CheckWinAutomation()
         {
             InitializeComponent();
             requestLimitControlService = IocKernel.Get<IRequestLimitControlService>();
-            eIP_MO_CheckWinViewModel = new EIP_MO_CheckWinViewModel();
+            eIP_MO_CheckWinViewModel = new EIP_MO_CheckWinAutomationViewModel();
             this.DataContext = eIP_MO_CheckWinViewModel;
             className = this.GetType().FullName;
         }
@@ -49,7 +47,7 @@ namespace EIPMonitor.Views.PowerMeter
                 Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
                 return;
             }
-           await Task.Run(() => eIP_MO_CheckWinViewModel.MOListQuery().Wait()).ContinueWith(t =>
+            await Task.Run(() => eIP_MO_CheckWinViewModel.MOListQuery().Wait()).ContinueWith(t =>
             {
                 requestLimitControlService.ReleaseClickPermission(className, btnName);
                 if (t.IsFaulted)
@@ -115,7 +113,7 @@ namespace EIPMonitor.Views.PowerMeter
             }
             finally
             {
-                requestLimitControlService.ReleaseClickPermission(className, btnName); 
+                requestLimitControlService.ReleaseClickPermission(className, btnName);
             }
         }
 

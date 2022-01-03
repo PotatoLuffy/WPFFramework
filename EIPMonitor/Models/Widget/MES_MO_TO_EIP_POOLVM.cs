@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EIPMonitor.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.Model.Widget
 {
-    public class MES_MO_TO_EIP_POOLVM : IEquatable<MES_MO_TO_EIP_POOLVM>
+    public class MES_MO_TO_EIP_POOLVM : ViewModelBase,IEquatable<MES_MO_TO_EIP_POOLVM>
     {
+        private bool checkbox;
         [DisplayName("选择")]
-        public Boolean CheckBox { get; set; }
+        public Boolean CheckBox { get => checkbox; set => SetProperty(ref checkbox, value); }
         [DisplayName("更新标记")]
         public String ExistsFlagName { get => this.ExistsFlag ? "不可更新" : "可更新"; }
         [DisplayName("提交状态")]

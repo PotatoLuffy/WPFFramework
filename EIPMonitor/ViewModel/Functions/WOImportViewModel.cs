@@ -202,7 +202,7 @@ namespace EIPMonitor.ViewModel.Functions
             }
             catch (Exception e1)
             {
-                LocalConstant.Logger.Debug("AppDomainUnhandledExceptionHandler", e1);
+                LocalConstant.Logger?.Debug("AppDomainUnhandledExceptionHandler", e1);
                 this.materialNameTextbox = "该工单不是一个电能表工单";
             }
         }

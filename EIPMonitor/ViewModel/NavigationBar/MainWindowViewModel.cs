@@ -34,6 +34,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 ),
                 new NavigationItem("[电能表]工单同步",typeof(WODataImport)),
                 new NavigationItem("[电能表]工单查询",typeof(ProductionIndexQueryUserControl)),
+                new NavigationItem("[电能表]工单提交",typeof(EIP_MO_CheckWin)),
                 new NavigationItem("[自动化]工单同步",typeof(WODataImportAutomation)),
                 new NavigationItem("[自动化]工单查询",typeof(ProductionIndexQueryAutomation))
             }) ;
@@ -53,6 +54,10 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private IUserStamp _user;
         private string _name;
         private int intializeTotalSteps = 8;
+        private string _msg;
+        private bool _showMsg = false;
+        public string Msg { get => _msg; set { SetProperty(ref _msg, value); ShowMsg = String.IsNullOrEmpty(Msg); } }
+        public bool ShowMsg { get => _showMsg; set => SetProperty(ref _showMsg, value); }
         public IUserStamp User { get => _user; set { _user = value; this.Name = _user.UserName; } }
         
         public String Name { get => _name; set => SetProperty(ref _name, value); }

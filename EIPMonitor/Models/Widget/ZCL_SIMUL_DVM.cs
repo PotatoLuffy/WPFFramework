@@ -1,4 +1,5 @@
-﻿using Infrastructure.Standard.Tool;
+﻿using EIPMonitor.ViewModel;
+using Infrastructure.Standard.Tool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.Model.Widget
 {
-    public class ZCL_SIMUL_DVM
+    public class ZCL_SIMUL_DVM:ViewModelBase
     {
+        private bool _checkBox;
         [DisplayName("选择")]
-        public Boolean CheckBox { get; set; }
+        public Boolean CheckBox { get => _checkBox; set => SetProperty(ref _checkBox, value); }
         [DisplayName("大类")]
         public string ZTYPE { get; set; }
         //类别

@@ -28,7 +28,7 @@ namespace EIPMonitor.DomainServices.MasterData.MES_MO_TO_EIP_POOLServices
             searchSql = "select * from MES_MO_TO_EIP_POOL where PRODUCTION_ORDER_ID = :PRODUCTION_ORDER_ID";
         }
 
-        public async Task<List<MES_MO_TO_EIP_POOL>> Check(List<MES_MO_TO_EIP_POOL> mES_MO_TO_EIP_POOLs, UserStamp userStamp)
+        public async Task<List<MES_MO_TO_EIP_POOL>> Check(List<MES_MO_TO_EIP_POOL> mES_MO_TO_EIP_POOLs, IUserStamp userStamp)
         {
             for (int inx = 0; inx < mES_MO_TO_EIP_POOLs.Count; inx++)
             {

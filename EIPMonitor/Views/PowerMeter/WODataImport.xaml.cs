@@ -47,8 +47,8 @@ namespace EIPMonitor.Views.PowerMeter
                     var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "WorkOrderTextbox");
                     if (!getThePermission)
                     {
-                        Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                        return;
+                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                    return;
                     }
                     var textBox = sender as TextBox;
                     wOImportViewModel.moName = textBox.Text;
@@ -65,24 +65,24 @@ namespace EIPMonitor.Views.PowerMeter
             }
         }
 
-        public void SynchronousButton_ClickEventHandler(object sender, RoutedEventArgs e)
+        public async void SynchronousButton_ClickEventHandler(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             string btnName = button.Name;
                 var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
                 if (!getThePermission)
                 {
-                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                    return;
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                return;
                 }
-                var result = Task.Run(() => wOImportViewModel.TriggerTheButtonRelativeAction(btnName).Wait()).ContinueWith(t=> {
+                await Task.Run(() => wOImportViewModel.TriggerTheButtonRelativeAction(btnName).Wait()).ContinueWith(t=> {
                     requestLimitControlService.ReleaseClickPermission(className, btnName);
                     if(t.IsFaulted)
                         Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
-                },TaskScheduler.FromCurrentSynchronizationContext());
+                });
                 //await wOImportViewModel.TriggerTheButtonRelativeAction(button.Name).ConfigureAwait(true);
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             string btnName = button.Name;
@@ -92,11 +92,11 @@ namespace EIPMonitor.Views.PowerMeter
                 Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
                 return;
             }
-            var result = Task.Run(() => wOImportViewModel.CalculateTheScore().ContinueWith(t => { 
+            await Task.Run(() => wOImportViewModel.CalculateTheScore().ContinueWith(t => { 
                 requestLimitControlService.ReleaseClickPermission(className, btnName);
                 if (t.IsFaulted)
                     Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
-            }, TaskScheduler.FromCurrentSynchronizationContext()).Wait());
+            }).Wait());
         }
 
         private void ProductionIndexDatagrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -137,5 +137,6 @@ namespace EIPMonitor.Views.PowerMeter
                 return null;
             }
         }
+
     }
 }

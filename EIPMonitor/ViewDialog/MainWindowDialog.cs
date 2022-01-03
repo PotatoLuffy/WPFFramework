@@ -48,8 +48,14 @@ namespace EIPMonitor.ViewDialog
             Messenger.Default.Register<string>(GetWindowDialog(), "MainWindowShutdown", new Action<String>((arg) => { Application.Current.Shutdown(); Environment.Exit(0); }));
             Messenger.Default.Register<string>(GetWindowDialog(), "SendMessageToMainWin", new Action<String>((msg) =>
             {
-                var obj = GetWindowDialog();
-                (obj as MainWindow).MainSnackbar.MessageQueue?.Enqueue(msg);
+                try
+                {
+                    MainWindow.Snackbar.MessageQueue?.Enqueue(msg);
+                }
+                catch (Exception e)
+                {
+                    //swallow the exception
+                }
             }));
             
         }

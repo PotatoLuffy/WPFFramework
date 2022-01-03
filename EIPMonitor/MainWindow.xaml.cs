@@ -35,15 +35,17 @@ namespace EIPMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Snackbar Snackbar;
         public MainWindow()
         {
             InitializeComponent();
-           // eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
+            Snackbar = this.MainSnackbar;
+            // eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
             //mainWindowViewModel = new MainWindowViewModel();
             //DataContext = mainWindowViewModel;
             //Mutex myMutex = new Mutex(true, "EIPMonitor", out ifNewInstance);
             //if (!ifNewInstance)
-           // {
+            // {
             //    this.Close();
             //    Environment.Exit(0);
             //    return;
@@ -51,6 +53,7 @@ namespace EIPMonitor
             //login = new Login();
             //login.Show();
             //login.Closed += LoginWinClosed_EventHandler;
+            ///DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue!);
         }
 
         private void OnSelectedItemChanged(object sender, DependencyPropertyChangedEventArgs e)=> MainScrollViewer.ScrollToHome();
