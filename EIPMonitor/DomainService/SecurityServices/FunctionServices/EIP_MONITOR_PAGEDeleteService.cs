@@ -24,7 +24,7 @@ namespace EIPMonitor.DomainServices.SecurityServices.FunctionServices
             deleteSql = "delete from EIP_MONITOR_PAGE where PAGE_NAME = :PAGE_NAME";
         }
 
-        public async Task<EIP_MONITOR_PAGE> Delete(EIP_MONITOR_PAGE eIP_MONITOR_PAGE, UserStamp userStamp)
+        public async Task<EIP_MONITOR_PAGE> Delete(EIP_MONITOR_PAGE eIP_MONITOR_PAGE, IUserStamp userStamp)
         {
             var createResult = await deleteCommand.Delete<EIP_MONITOR_PAGE>(deleteSql, eIP_MONITOR_PAGE).ConfigureAwait(false);
             if (createResult <= 0) return null;

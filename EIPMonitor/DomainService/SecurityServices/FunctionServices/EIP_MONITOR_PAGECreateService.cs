@@ -29,7 +29,7 @@ namespace EIPMonitor.DomainServices.SecurityServices.FunctionServices
             insertSql = "insert into EIP_MONITOR_PAGE( PAGE_NAME,PAGE_FUNCTION_NAME,OrderWeight,STATUS,STATUS_NAME) values(:PAGE_NAME,:PAGE_FUNCTION_NAME,:OrderWeight,:STATUS,:STATUS_NAME)";
         }
 
-        public async Task<EIP_MONITOR_PAGE> CreateOrUpdate(EIP_MONITOR_PAGE eIP_MONITOR_PAGE, UserStamp userStamp)
+        public async Task<EIP_MONITOR_PAGE> CreateOrUpdate(EIP_MONITOR_PAGE eIP_MONITOR_PAGE, IUserStamp userStamp)
         {
             var result = await createCommand.ExtractEntry<EIP_MONITOR_PAGE>(searchSql, eIP_MONITOR_PAGE).ConfigureAwait(false);
             if (result != null)

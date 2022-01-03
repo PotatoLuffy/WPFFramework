@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="EIPMonitor.Views.PowerMeter.EIPParameterSetUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EIPMonitor.Views.PowerMeter"
+             mc:Ignorable="d" 
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="534" d:DesignWidth="800" Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="232*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Content="下载模板" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="DownloadTemplateButtton" Click="DownloadTemplateButtton_Click" Height="Auto"/>
+        <Button Content="上传数据" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="ImportTemplateButtton" Grid.Column="1" Click="ImportTemplateButtton_Click" Height="Auto"/>
+        <DataGrid Margin="10,2.6,10,9.4" x:Name="successDataGrid" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" IsReadOnly="True" AutoGeneratingColumn="successDataGrid_AutoGeneratingColumn" />
+    </Grid>
+</UserControl>

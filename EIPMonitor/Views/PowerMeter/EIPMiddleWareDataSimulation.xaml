@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EIPMonitor.Views.PowerMeter"
+             xmlns:viewModel="clr-namespace:EIPMonitor.ViewModel.Functions"
+             d:DataContext="{d:DesignInstance viewModel:EIPMiddleWareDataSimulationViewModel}"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="543" d:DesignWidth="800" Background="White">
@@ -34,10 +36,10 @@
                 <ColumnDefinition Width="99*" />
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="WorkOrderTextbox" Text="{Binding WorkOrderFromTextBox}"  materialDesign:HintAssist.Hint="工单号（必填,回车验证工单)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="WorkOrderTextbox" Text="{Binding WorkOrderTextbox}"  materialDesign:HintAssist.Hint="工单号（必填,回车验证工单)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
             <Button Grid.Row="1" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤1" />
-            <DatePicker materialDesign:HintAssist.Hint="回流焊 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+            <DatePicker x:Name="ReflowDatePickerName" materialDesign:HintAssist.Hint="回流焊 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="ReflowDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -46,11 +48,11 @@
             <Button x:Name="ReflowBtn" Grid.Row="1" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤1 回流焊 模拟" Click="Buttton_Click">
                 <TextBlock Text="回流焊 模拟" />
             </Button>
-            <TextBox x:Name="ReflowTextBlock" Text="{Binding ReflowTextBlock1, Mode=TwoWay}" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="回流焊 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+            <TextBox x:Name="ReflowTextBlock" Text="{Binding ReflowTextBlock, Mode=TwoWay}" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="回流焊 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
 
             <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤2" />
-            <DatePicker materialDesign:HintAssist.Hint="AOI " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+            <DatePicker x:Name="PCBAOIDatePickerName" materialDesign:HintAssist.Hint="AOI " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="PCBAOIDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -62,7 +64,7 @@
             <TextBox Text="{Binding PCBAOITextBlock, Mode=TwoWay}" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="AOI 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="3" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤3" />
-            <DatePicker materialDesign:HintAssist.Hint="电池电流 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+            <DatePicker x:Name="BatteryCurrrentDatePickerName" materialDesign:HintAssist.Hint="电池电流 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="BatteryCurrrentDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -74,7 +76,7 @@
             <TextBox Text="{Binding BatteryCurrrentTextBlock, Mode=TwoWay}" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="电池电流 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="4" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤4" />
-            <DatePicker materialDesign:HintAssist.Hint="波峰焊 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
+            <DatePicker x:Name="WaveDatePickerName" materialDesign:HintAssist.Hint="波峰焊 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="WaveDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -86,7 +88,7 @@
             <TextBox Text="{Binding WaveTextBlock, Mode=TwoWay}" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="波峰焊 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="5" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <DatePicker materialDesign:HintAssist.Hint="单板测试 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2">
+            <DatePicker x:Name="FCTDatePickerName" materialDesign:HintAssist.Hint="单板测试 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="FCTDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -98,7 +100,7 @@
             <TextBox Text="{Binding FCTTextBlock, Mode=TwoWay}" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="单板测试 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="6" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
-            <DatePicker materialDesign:HintAssist.Hint="耐压测试 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">
+            <DatePicker x:Name="HighVoltageDatePickerName" materialDesign:HintAssist.Hint="耐压测试 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="HighVoltageDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -110,7 +112,7 @@
             <TextBox Text="{Binding HighVoltageTextBlock, Mode=TwoWay}" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="耐压测试 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
-            <DatePicker materialDesign:HintAssist.Hint="老化室 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2">
+            <DatePicker x:Name="AgingDatePickerName" materialDesign:HintAssist.Hint="老化室 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="AgingDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -122,7 +124,7 @@
             <TextBox Text="{Binding AgingTextBlock, Mode=TwoWay}" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="老化室 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤8" />
-            <DatePicker materialDesign:HintAssist.Hint="基本误差 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2">
+            <DatePicker x:Name="IntrinsicErrorDatePickerName" materialDesign:HintAssist.Hint="基本误差 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="IntrinsicErrorDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -134,7 +136,7 @@
             <TextBox Text="{Binding IntrinsicErrorTextBlock, Mode=TwoWay}" Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="9" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤8" />
-            <DatePicker materialDesign:HintAssist.Hint="基本误差详情 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2">
+            <DatePicker x:Name="IntrinsicErrorDetailDatePickerName" materialDesign:HintAssist.Hint="基本误差详情 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="IntrinsicErrorDetailDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>
@@ -146,7 +148,7 @@
             <TextBox Text="{Binding IntrinsicErrorDetailTextBlock, Mode=TwoWay}" Grid.Row="9" Grid.Column="4" Grid.ColumnSpan="4" IsEnabled="False" materialDesign:HintAssist.Hint="基本误差详情 模拟结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
             <Button Grid.Row="10" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤8" />
-            <DatePicker materialDesign:HintAssist.Hint="日计时误差 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2">
+            <DatePicker x:Name="DayTimingDatePickerName" materialDesign:HintAssist.Hint="日计时误差 " Style="{StaticResource MaterialDesignOutlinedDatePicker}" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2">
                 <DatePicker.SelectedDate>
                     <Binding Path="DayTimingDatePicker"  UpdateSourceTrigger="PropertyChanged">
                     </Binding>

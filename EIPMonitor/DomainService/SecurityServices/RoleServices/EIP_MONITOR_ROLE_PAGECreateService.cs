@@ -24,7 +24,7 @@ namespace EIPMonitor.DomainServices.SecurityServices.RoleServices
             createSql = "insert into EIP_MONITOR_ROLE_PAGE ( PAGE_NAME,ROLE_NAME,DEPARTMENT,RIGHTCODE,RIGHTNAME ) values( :PAGE_NAME, :ROLE_NAME, :DEPARTMENT, :RIGHTCODE, :RIGHTNAME ) ";
         }
 
-        public async Task<EIP_MONITOR_ROLE_PAGE> Create(EIP_MONITOR_ROLE_PAGE eIP_MONITOR_ROLE_PAGE, UserStamp userStamp)
+        public async Task<EIP_MONITOR_ROLE_PAGE> Create(EIP_MONITOR_ROLE_PAGE eIP_MONITOR_ROLE_PAGE, IUserStamp userStamp)
         {
             var existedEntry = await createCommand.ExtractEntry<EIP_MONITOR_ROLE_PAGE>(searchSql, eIP_MONITOR_ROLE_PAGE).ConfigureAwait(false);
             if (existedEntry != null) return null;
