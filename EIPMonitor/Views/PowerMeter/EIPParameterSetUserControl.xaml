@@ -16,8 +16,8 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Content="下载模板" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="DownloadTemplateButtton" Click="DownloadTemplateButtton_Click" Height="Auto"/>
-        <Button Content="上传数据" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="ImportTemplateButtton" Grid.Column="1" Click="ImportTemplateButtton_Click" Height="Auto"/>
+        <Button Background="#1890FF" Content="下载模板" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="DownloadTemplateButtton" Click="DownloadTemplateButtton_Click" Height="Auto"/>
+        <Button Background="#1890FF" Content="上传数据" HorizontalAlignment="Stretch" Margin="10" FontSize="38" VerticalAlignment="Stretch" x:Name="ImportTemplateButtton" Grid.Column="1" Click="ImportTemplateButtton_Click" Height="Auto"/>
         <DataGrid Margin="10,2.6,10,9.4" x:Name="successDataGrid" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" IsReadOnly="True" AutoGeneratingColumn="successDataGrid_AutoGeneratingColumn" />
     </Grid>
 </UserControl>

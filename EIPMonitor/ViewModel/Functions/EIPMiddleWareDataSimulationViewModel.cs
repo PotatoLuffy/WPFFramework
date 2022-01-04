@@ -51,7 +51,7 @@ namespace EIPMonitor.ViewModel.Functions
         public DateTime? IntrinsicErrorDatePicker { get => intrinsicErrorDatePicker; set => SetProperty(ref intrinsicErrorDatePicker, value); }
         public DateTime? IntrinsicErrorDetailDatePicker { get => intrinsicErrorDetailDatePicker; set => SetProperty(ref intrinsicErrorDetailDatePicker, value); }
         public DateTime? DayTimingDatePicker { get => dayTimingDatePicker; set => SetProperty(ref dayTimingDatePicker, value); }
-
+        private readonly string woVerifySqlText = "select * from ZGW_MO_T where IPONO = :IPONO and rownum = 1";
         public string pCBAOITextBlock;
         public string fCTTextBlock;
         public string batteryCurrrentTextBlock;
@@ -73,7 +73,7 @@ namespace EIPMonitor.ViewModel.Functions
         public string IntrinsicErrorTextBlock { get => intrinsicErrorTextBlock; set => SetProperty(ref intrinsicErrorTextBlock, value); }
         public string IntrinsicErrorDetailTextBlock { get => intrinsicErrorDetailTextBlock; set => SetProperty(ref intrinsicErrorDetailTextBlock, value); }
         public string DayTimingTextBlock { get => dayTimingTextBlock; set => SetProperty(ref dayTimingTextBlock, value); }
-
+        private readonly GenericExecutionService<ZGW_MO_T> genericExecutionService2 = new GenericExecutionService<ZGW_MO_T>();
         private string workOrderTextbox;
         public string WorkOrderTextbox { get => workOrderTextbox; set => SetProperty(ref workOrderTextbox, value); }
         private Dictionary<String, Action<DateTime?>> buttonDateMapper;
@@ -88,6 +88,12 @@ namespace EIPMonitor.ViewModel.Functions
         private List<EIP_MIN_DATA> dateList;
         ZGW_MO_TYPECreateService zGW_MO_TYPECreateService = new ZGW_MO_TYPECreateService();
         MO mo;
+        private string materialName;
+        private string materialCode;
+        private string moQty;
+        public string MaterialName { get => materialName; set => SetProperty(ref materialName, value); }
+        public string MaterialCode { get => materialCode; set => SetProperty(ref materialCode, value); }
+        public string MoQty { get => moQty; set => SetProperty(ref moQty, value); }
         public EIPMiddleWareDataSimulationViewModel()
         {
             buttonDateMapper = new Dictionary<string, Action<DateTime?>>()
@@ -241,6 +247,13 @@ namespace EIPMonitor.ViewModel.Functions
                 Messenger.Default.Send("未能成功创建行到表ZGW_MO_TYPE。", "SendMessageToMainWin");
                 return;
             }
+            var verifiedMo = await VerifyTheMOName(this.WorkOrderTextbox).ConfigureAwait(true);
+            if (verifiedMo != null)
+            {
+                this.MaterialName = verifiedMo.MATERIALSNAME;
+                this.MaterialCode = verifiedMo.MATERIALSCODE;
+                this.MoQty = verifiedMo.AMOUNT;
+            }
             OracleDynamicParameters dynamicParameters = new OracleDynamicParameters();
             dynamicParameters.Add("pi_mo", this.WorkOrderTextbox);
             dynamicParameters.Add("mycursor", dbType: OracleDbType.RefCursor, direction: ParameterDirection.Output);
@@ -254,8 +267,25 @@ namespace EIPMonitor.ViewModel.Functions
             InitializeDate();
         }
 
+            public async Task<ZGW_MO_T> VerifyTheMOName(string moName)
+            {
+                if (!moName.StartsWith("5"))
+                {
+                    Messenger.Default.Send("请输入以5开头的自动化工单。", "SendMessageToMainWin");
+                    return null;
+                }
+                ZGW_MO_T workOrder = new ZGW_MO_T() { IPONO = moName };
+                var verifyResult = await genericExecutionService2.SGCCQueryAsync(woVerifySqlText, workOrder).ConfigureAwait(true);
 
-        public void ClearAllThePicker()
+
+                if (verifyResult == null)
+                {
+                    Messenger.Default.Send("未找到该工单相关信息。", "SendMessageToMainWin");
+                    return null;
+                }
+                return verifyResult;
+            }
+            public void ClearAllThePicker()
         {
             this.PCBAOIDatePicker = null;
             this.FCTDatePicker = null;

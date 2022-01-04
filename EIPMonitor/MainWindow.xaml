@@ -10,6 +10,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}"
         Style="{StaticResource MaterialDesignWindow}" 
+        FontFamily="苹方/思源黑体"
         WindowStartupLocation="CenterScreen"
         Title="EIP监控系统" Height="450" Width="800">
 
@@ -33,7 +34,7 @@
                         </ListBox.Resources>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="domain:NavigationItem">
-                                <TextBlock Text="{Binding Name}" Margin="24 4 0 4" AutomationProperties.AutomationId="NavigationItemPage" />
+                                <TextBlock Text="{Binding Name}" FontFamily="苹方/思源黑体" Margin="24 4 0 4" AutomationProperties.AutomationId="NavigationItemPage" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -53,7 +54,8 @@
                         </materialDesign:PopupBox>
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton x:Name="MenuToggleButton" IsChecked="False" FontSize="14"  Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                            <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="Material Design In XAML Toolkit" />
+                            <Image Source="/Icons/head_logo.png" Margin="0,7,0,8" Width="126" />
+                            <TextBlock VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="16 0 0 0" Text="EIP监控系统" />
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:ColorZone>

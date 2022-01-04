@@ -1,8 +1,10 @@
 ﻿using EIPMonitor.DomainServices.MasterData;
+using EIPMonitor.DomainServices.SecurityServices.FunctionServices;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
 using EIPMonitor.Views.Automation;
 using EIPMonitor.Views.PowerMeter;
+using EIPMonitor.Views.UserControlViews;
 using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
@@ -23,29 +25,42 @@ namespace EIPMonitor.ViewModel.NavigationBar
     public class MainWindowViewModel: ViewModelBase
     {
         private IEIP_PRO_GlobalParamConfigureService eIP_PRO_GlobalParamConfigureService;
+        private EIP_MONITOR_PAGESearchService eIP_MONITOR_PAGESearchService = new EIP_MONITOR_PAGESearchService();
+        private static IReadOnlyDictionary<String, Type> UserControlMapper = null;
         public MainWindowViewModel()
         {
-            NavigationItems = new ObservableCollection<NavigationItem>(new[]
-            {
-                new NavigationItem(
-                    "Welcome",
-                    typeof(Welcome)
-
-                ),
-                new NavigationItem("[电能表]工单同步",typeof(WODataImport)),
-                new NavigationItem("[电能表]工单查询",typeof(ProductionIndexQueryUserControl)),
-                new NavigationItem("[电能表]工单提交",typeof(EIP_MO_CheckWin)),
-                new NavigationItem("[自动化]工单同步",typeof(WODataImportAutomation)),
-                new NavigationItem("[自动化]工单查询",typeof(ProductionIndexQueryAutomation))
-            }) ;
+            UserControlMapper = new Dictionary<String, Type>()
+        {
+            { "WODataImport", typeof(WODataImport)},
+            { "ProductionIndexQueryUserControl",  typeof(ProductionIndexQueryUserControl) },
+            { "EIPParameterSetUserControl",  typeof(EIPParameterSetUserControl)},
+            { "EIPMiddleWareDataSimulation",  typeof(EIPMiddleWareDataSimulation)},
+            { "Welcome", typeof(Welcome)},
+            { "WODataImportAutomation",  typeof(WODataImportAutomation)},
+            { "ProductionIndexQueryUserControlAutomation",  typeof(ProductionIndexQueryAutomation)},
+            { "EIP_MO_CheckWin",  typeof(EIP_MO_CheckWin)},
+            { "EIP_MO_CheckWinAutomation",  typeof(EIP_MO_CheckWinAutomation)},
+            { "RolePermissionConfiguration", typeof(RolePermissionConfiguration)},
+            { "PageConfiguration",  typeof(PageConfiguration) },
+            { "PromoteTheScoreAutomation",  typeof(PromoteTheScoreAutomation) },
+            { "PromoteTheScorePowerMeter",  typeof(PromoteTheScorePowerMeter) },
+            { "Register",  typeof(Register) },
+        };
+            //NavigationItems = new ObservableCollection<NavigationItem>(new[]
+            //{
+            //    new NavigationItem("欢迎",typeof(Welcome)),
+            //    new NavigationItem("[电能表]工单同步",typeof(WODataImport)),
+            //    new NavigationItem("[电能表]工单查询",typeof(ProductionIndexQueryUserControl)),
+            //    new NavigationItem("[电能表]工单提交",typeof(EIP_MO_CheckWin)),
+            //    new NavigationItem("[电能表]模拟提分",typeof(PromoteTheScorePowerMeter)),
+            //    new NavigationItem("[电能表]模拟数据",typeof(EIPMiddleWareDataSimulation)),
+            //    new NavigationItem("[电能表]参数设置",typeof(EIPParameterSetUserControl)),
+            //    new NavigationItem("[自动化]工单同步",typeof(WODataImportAutomation)),
+            //    new NavigationItem("[自动化]工单查询",typeof(ProductionIndexQueryAutomation)),
+            //    new NavigationItem("[自动化]模拟提分",typeof(PromoteTheScoreAutomation)),
+            //}) ;
             eIP_PRO_GlobalParamConfigureService = IocKernel.Get<IEIP_PRO_GlobalParamConfigureService>();
-            //var items = GenerateNavigationItems(snackbarMessageQueue)?.OrderBy(i => i.Name)??null;
-            //if (items != null)
-            //    foreach (var item in items)
-            //    {
-            //        NavigationItems.Add(item);
-            //    }
-
+            InitializeBasicInformation();
         }
 
         private NavigationItem? _selectedItem;
@@ -53,7 +68,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private bool _controlsEnabled = true;
         private IUserStamp _user;
         private string _name;
-        private int intializeTotalSteps = 8;
+        private int intializeTotalSteps = 7;
         private string _msg;
         private bool _showMsg = false;
         public string Msg { get => _msg; set { SetProperty(ref _msg, value); ShowMsg = String.IsNullOrEmpty(Msg); } }
@@ -61,6 +76,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
         public IUserStamp User { get => _user; set { _user = value; this.Name = _user.UserName; } }
         
         public String Name { get => _name; set => SetProperty(ref _name, value); }
+        private ObservableCollection<NavigationItem> _navigationItems;
         public ObservableCollection<NavigationItem> NavigationItems { get; set; }
 
         public NavigationItem? SelectedItem
@@ -80,23 +96,27 @@ namespace EIPMonitor.ViewModel.NavigationBar
         }
         public void InitializeBasicInformation()
         {
-            Messenger.Default.Send($"1/{intializeTotalSteps}:获取登录信息", "SendMessageToLoginWin");
+            Messenger.Default.Send($"1/{intializeTotalSteps}:获取登录信息", "SendMessageToMainWin");
             this.User = IocKernel.Get<IUserStamp>();
-            Messenger.Default.Send($"2/{intializeTotalSteps}:{this.Name},欢迎使用EIP监控平台。", "SendMessageToLoginWin");
+            Messenger.Default.Send($"2/{intializeTotalSteps}:{this.Name},欢迎使用EIP监控平台。", "SendMessageToMainWin");
             if (!this.User.IsAvailable())
             {
                 ApplicationShutdown();
                 return;
             }
 
-            Messenger.Default.Send($"3/{intializeTotalSteps}:验证版本信息", "SendMessageToLoginWin");
-            //VeriyVersion().Wait();
-            Messenger.Default.Send($"4/{intializeTotalSteps}:版本正确", "SendMessageToLoginWin");
+            Messenger.Default.Send($"3/{intializeTotalSteps}:验证版本信息", "SendMessageToMainWin");
+            VeriyVersion().Wait();
+            Messenger.Default.Send($"4/{intializeTotalSteps}:版本正确", "SendMessageToMainWin");
 
-            Messenger.Default.Send($"5/{intializeTotalSteps}:配置数据库信息", "SendMessageToLoginWin");
-            //InitializeTheGlobalStaticParameter().Wait();
-            Messenger.Default.Send($"6/{intializeTotalSteps}:配置数据库信息", "SendMessageToLoginWin");
-            //Messenger.Default.Send(String.Empty, "ApplicationShutdown");
+            Messenger.Default.Send($"5/{intializeTotalSteps}:配置数据库信息", "SendMessageToMainWin");
+            InitializeTheGlobalStaticParameter().Wait();
+            Messenger.Default.Send($"6/{intializeTotalSteps}:配置数据库信息", "SendMessageToMainWin");
+            Messenger.Default.Send($"7/{intializeTotalSteps}:加载授权页面", "SendMessageToMainWin");
+            var pageTask = ReloadPages();
+            pageTask.Wait();
+            NavigationItems = pageTask.Result;
+            Messenger.Default.Send($"7/{intializeTotalSteps}:授权页面加载完成", "SendMessageToMainWin");
         }
         public void ApplicationShutdown()
         {
@@ -147,7 +167,21 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 Messenger.Default.Send("配置未获取完全", "SendMessageToLoginWin");
             }
         }
-
+        private async Task<ObservableCollection<NavigationItem>> ReloadPages()
+        {
+            ObservableCollection<NavigationItem> navigationItems = new ObservableCollection<NavigationItem>();
+            var result = await eIP_MONITOR_PAGESearchService.GetFunctions(IocKernel.Get<IUserStamp>()).ConfigureAwait(true);
+            if (result == null || result.Count <= 0)
+            {
+                navigationItems.Add(new NavigationItem("欢迎", typeof(Welcome)));
+                return navigationItems;
+            }
+            foreach (var page in result.OrderBy(o=>o.OrderWeight))
+            {
+                navigationItems.Add(new NavigationItem(page.PAGE_NAME, UserControlMapper[page.PAGE_FUNCTION_NAME]));
+            }
+            return navigationItems;
+        }
         private static IEnumerable<NavigationItem> GenerateNavigationItems(ISnackbarMessageQueue snackbarMessageQueue)
         {
             if (snackbarMessageQueue is null)

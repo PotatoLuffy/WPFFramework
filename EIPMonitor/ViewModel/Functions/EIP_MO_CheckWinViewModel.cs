@@ -1,4 +1,5 @@
-﻿using EIPMonitor.DomainServices.MasterData;
+﻿using EIPMonitor.Domain.CustomException;
+using EIPMonitor.DomainServices.MasterData;
 using EIPMonitor.DomainServices.MasterData.MES_MO_TO_EIP_POOLServices;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
@@ -19,7 +20,6 @@ namespace EIPMonitor.ViewModel.Functions
 {
     public class EIP_MO_CheckWinViewModel:ViewModelBase
     {
-        private List<ZCL_SIMUL_D> details;
         private ObservableCollection<MES_MO_TO_EIP_POOLVM> mES_MO_TO_EIP_POOLs;
         private ZCL_SIMUL_DService zCL_SIMUL_DService = new ZCL_SIMUL_DService();
         private MES_MO_TO_EIP_POOLCheckService mES_MO_TO_EIP_POOLCheckService = new MES_MO_TO_EIP_POOLCheckService();
@@ -29,7 +29,6 @@ namespace EIPMonitor.ViewModel.Functions
         private List<ZCL_SIMUL_D> selectedDetails;
 
         public ObservableCollection<MES_MO_TO_EIP_POOLVM> MES_MO_TO_EIP_POOLs { get => mES_MO_TO_EIP_POOLs; set => SetProperty(ref mES_MO_TO_EIP_POOLs, value); }
-        public List<ZCL_SIMUL_D> Details { get => details; set => details = value; }
         public List<ZCL_SIMUL_D> SelectedDetails { get => selectedDetails; set => SetProperty(ref selectedDetails, value); }
         private string workOrderFromTextBox;
         private string workOrderToTextBox;
@@ -48,8 +47,9 @@ namespace EIPMonitor.ViewModel.Functions
                 if ((CopiedOrders?.Count ?? 0) >= 1)
                 {
                     await GetScoresAndDetail(null, null, this.CopiedOrders).ConfigureAwait(false);
+                    return;
                 }
-                if (String.IsNullOrWhiteSpace(workOrderFromTextBox) && String.IsNullOrWhiteSpace(workOrderToTextBox))
+                if (String.IsNullOrWhiteSpace(WorkOrderFromTextBox) && String.IsNullOrWhiteSpace(WorkOrderToTextBox))
                 {
                     Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
                     return;
@@ -59,11 +59,6 @@ namespace EIPMonitor.ViewModel.Functions
 
                 await GetScoresAndDetail(ifBeginOrder ? workOrderFromTextBox : workOrderToTextBox, ifEndOrder ? workOrderToTextBox : workOrderFromTextBox, null).ConfigureAwait(false);
 
-                if (Details == null || Details.Count <= 0)
-                {
-                    Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
-                    return;
-                }
             }
             catch (Exception e)
             {
@@ -72,17 +67,30 @@ namespace EIPMonitor.ViewModel.Functions
         }
         private async Task GetScoresAndDetail(string beginOrder, string endOrder, List<string> orders)
         {
-            Details = await zCL_SIMUL_DService.GetEntries(beginOrder, endOrder, orders, startLetter).ConfigureAwait(true);
-            this.MES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>()).DeepClone<List<MES_MO_TO_EIP_POOL>, ObservableCollection<MES_MO_TO_EIP_POOLVM>>();
+            if (orders != null && orders.Count >= 1)
+
+                this.MES_MO_TO_EIP_POOLs = (await mES_MO_TO_EIP_POOLSearchService.GeMES_MO_TO_EIP_POOL(orders, startLetter).ConfigureAwait(true)).DeepClone<List<MES_MO_TO_EIP_POOL>, ObservableCollection<MES_MO_TO_EIP_POOLVM>>();
+            else
+                this.MES_MO_TO_EIP_POOLs = (await mES_MO_TO_EIP_POOLSearchService.GetQueryData(beginOrder, endOrder, startLetter).ConfigureAwait(true)).DeepClone<List<MES_MO_TO_EIP_POOL>, ObservableCollection<MES_MO_TO_EIP_POOLVM>>();
             RegisterEvent();
         }
         public async Task CheckSelectedRows()
         {
-
-            var localList = this.MES_MO_TO_EIP_POOLs.DeepClone().Where(w => w.ExistsFlag == false).ToList().DeepClone<List<MES_MO_TO_EIP_POOLVM>, List<MES_MO_TO_EIP_POOL>>();
-            var result = await mES_MO_TO_EIP_POOLCheckService.Check(localList.Where(w => w.SCORE >= 85m).ToList(), IocKernel.Get<IUserStamp>()).ConfigureAwait(true);
-            this.MES_MO_TO_EIP_POOLs = result.DeepClone<List<MES_MO_TO_EIP_POOL>, ObservableCollection<MES_MO_TO_EIP_POOLVM>>();
-            RegisterEvent();
+            try
+            {
+                var localList = this.MES_MO_TO_EIP_POOLs.DeepClone().Where(w => w.ExistsFlag == false && w.CheckBox == true).ToList().DeepClone<List<MES_MO_TO_EIP_POOLVM>, List<MES_MO_TO_EIP_POOL>>();
+                var result = await mES_MO_TO_EIP_POOLCheckService.Check(localList.Where(w => w.SCORE >= 85m).ToList(), IocKernel.Get<IUserStamp>()).ConfigureAwait(true);
+                this.MES_MO_TO_EIP_POOLs = result.DeepClone<List<MES_MO_TO_EIP_POOL>, ObservableCollection<MES_MO_TO_EIP_POOLVM>>();
+                RegisterEvent();
+            }
+            catch (OAResponseFailureException e)
+            {
+                Messenger.Default.Send(e.Message, "SendMessageToMainWin");
+            }
+            catch (Exception e1)
+            {
+                Messenger.Default.Send(e1.Message, "SendMessageToMainWin");
+            }
         }
         public bool? IsAllItems1Selected
         {

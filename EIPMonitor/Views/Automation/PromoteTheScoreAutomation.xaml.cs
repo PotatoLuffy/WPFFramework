@@ -36,6 +36,8 @@ namespace EIPMonitor.Views.Automation
         }
         private async void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key != Key.Enter) return;
+            promoteTheScorePowerMeterViewModel.OrderTextBox = this.orderTextBox.Text;
             var getThePermission = requestLimitControlService.RequestClickPermission(className, "TextBox");
             if (!getThePermission)
             {

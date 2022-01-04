@@ -30,7 +30,7 @@ namespace EIPMonitor.DomainServices.SecurityServices.FunctionServices
             return result;
         }
 
-        public Task<List<EIP_MONITOR_PAGE>> GetFunctions(UserStamp userStamp)
+        public Task<List<EIP_MONITOR_PAGE>> GetFunctions(IUserStamp userStamp)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("EMPLOYEEID", userStamp.EmployeeId);

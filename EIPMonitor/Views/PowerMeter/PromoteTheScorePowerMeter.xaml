@@ -42,10 +42,10 @@
             <TextBox x:Name="qualityScoreTextBlock" Text="{Binding QualityScoreTextBlock}" materialDesign:HintAssist.Hint="质地评分" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"  Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="2" />
             <TextBox x:Name="materialCodeTextBlock" Text="{Binding MaterialCodeTextBlock}" materialDesign:HintAssist.Hint="物料编码" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"  Grid.Row="2" Grid.Column="4"  Grid.ColumnSpan="4" />
 
-            <Button Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="选中以下想要提分的项,然后点击此按钮" Click="Button_Click_1">
+            <Button Background="#1890FF" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="3"  Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="选中以下想要提分的项,然后点击此按钮" Click="Button_Click_1">
                 <TextBlock Text="模拟提分" />
             </Button>
-            <Button Grid.Row="3"  Grid.ColumnSpan="2" x:Name="queryOrderBtn"   Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="选中以下想要提分的项,然后点击此按钮" Click="Button_Click">
+            <Button Background="#1890FF" Grid.Row="3"  Grid.ColumnSpan="2" x:Name="queryOrderBtn"   Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="选中以下想要提分的项,然后点击此按钮" Click="Button_Click">
                 <TextBlock Text="查询工单" />
             </Button>
             <DataGrid x:Name="scoreDataGrid" 
@@ -65,7 +65,7 @@
                     <domain:BindingProxy x:Key="DataContextProxy" Data="{Binding}" />
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding Checkbox, UpdateSourceTrigger=PropertyChanged}" 
+                    <DataGridCheckBoxColumn Binding="{Binding CheckBox, UpdateSourceTrigger=PropertyChanged}" 
                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
                         <DataGridCheckBoxColumn.Header>

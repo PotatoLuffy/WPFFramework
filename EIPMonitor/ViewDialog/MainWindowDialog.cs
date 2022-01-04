@@ -20,6 +20,7 @@ namespace EIPMonitor.ViewDialog
         {
             mainWindowViewModel = new MainWindowViewModel();
             GetWindowDialog().DataContext = mainWindowViewModel;
+
         }
         public override void BindViewModel<T>(T viewModel)
         {

@@ -25,6 +25,7 @@ namespace EIPMonitor.Views.PowerMeter
     public partial class EIPMiddleWareDataSimulation : UserControl
     {
         private Dictionary<string, DatePicker> buttonDateMapper;
+        private Dictionary<String, Func<DateTime?>> GrabedDateMapper;
         private readonly EIPMiddleWareDataSimulationViewModel eIPMiddleWareDataSimulationViewModel;
         private IRequestLimitControlService requestLimitControlService;
         private readonly string className;
@@ -44,6 +45,19 @@ namespace EIPMonitor.Views.PowerMeter
                 { "IntrinsicErrorBtn",this.IntrinsicErrorDatePickerName},
                 { "IntrinsicErrorDetailBtn",this.IntrinsicErrorDetailDatePickerName},
                 { "DayTimingBtn", this.DayTimingDatePickerName},
+            };
+            GrabedDateMapper = new Dictionary<string, Func<DateTime?>>()
+            {
+                { "PCBAOIBtn", ()=>eIPMiddleWareDataSimulationViewModel.PCBAOIDatePicker},
+                { "FCTBtn",()=>eIPMiddleWareDataSimulationViewModel.FCTDatePicker },
+                { "BatteryCurrrentBtn",()=>eIPMiddleWareDataSimulationViewModel.BatteryCurrrentDatePicker},
+                { "AgingBtn",()=>eIPMiddleWareDataSimulationViewModel.AgingDatePicker},
+                { "ReflowBtn",()=>eIPMiddleWareDataSimulationViewModel.ReflowDatePicker},
+                { "WaveBtn",()=>eIPMiddleWareDataSimulationViewModel.WaveDatePicker},
+                { "HighVoltageBtn",()=>eIPMiddleWareDataSimulationViewModel.HighVoltageDatePicker},
+                { "IntrinsicErrorBtn",()=>eIPMiddleWareDataSimulationViewModel.IntrinsicErrorDatePicker},
+                { "IntrinsicErrorDetailBtn",()=>eIPMiddleWareDataSimulationViewModel.IntrinsicErrorDetailDatePicker},
+                { "DayTimingBtn", ()=>eIPMiddleWareDataSimulationViewModel.DayTimingDatePicker},
             };
             eIPMiddleWareDataSimulationViewModel = new EIPMiddleWareDataSimulationViewModel();
             this.DataContext = eIPMiddleWareDataSimulationViewModel;
@@ -70,6 +84,7 @@ namespace EIPMonitor.Views.PowerMeter
         }
         private async void WorkOrderTextbox_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key != Key.Enter) return;
             var getThePermission = requestLimitControlService.RequestClickPermission(className, "TextBox");
             if (!getThePermission)
             {
@@ -89,10 +104,10 @@ namespace EIPMonitor.Views.PowerMeter
         private void EnableOrDisableTheSelectedDatePicker()
         {
             foreach (var pickerDic in buttonDateMapper)
-                if (pickerDic.Value.SelectedDate == null || !pickerDic.Value.SelectedDate.HasValue)
-                    pickerDic.Value.IsEnabled = false;
-                else
+                if (!GrabedDateMapper[pickerDic.Key]().HasValue)
                     pickerDic.Value.IsEnabled = true;
+                else
+                    pickerDic.Value.IsEnabled = false;
         }
     }
 }

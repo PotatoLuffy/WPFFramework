@@ -70,17 +70,15 @@ namespace EIPMonitor.ViewModel.SecurityModels
             try
             {
                 this.Login();
-                Task<EIPProductionIndexUsers> resultTask = null;
-                //var resultTask = iEIPProductionIndexUsersLogin.Login(this.User);
-                //resultTask.Wait();
-                //if (resultTask.Result == null)
-                //{
-                //    throw new LoginAuthenticatedFailureException("用户名或者密码错误。");
-                //    //Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
-                //}
+                var result = await iEIPProductionIndexUsersLogin.Login(this.User);
+                if (result == null)
+                {
+                    throw new LoginAuthenticatedFailureException("用户名或者密码错误。");
+                    //Messenger.Default.Send("用户名或者密码错误。", "SendMessageToLoginWin");
+                }
                 var userStamp = IocKernel.Get<IUserStamp>();
-                userStamp.UserName = resultTask?.Result.UserName??"123";
-                userStamp.EmployeeId = resultTask?.Result.EmployeeId??"123";
+                userStamp.UserName = result.UserName;
+                userStamp.EmployeeId = result.EmployeeId;
                 //Messenger.Default.Send("验证成功准备登录。", "SendMessageToLoginWin");
                 
                 var dialog = IocKernel.Get<IModelDialog>("MainWindowDialog");

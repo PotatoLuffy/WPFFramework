@@ -14,7 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" />
                 <RowDefinition Height="53.4" MaxHeight="46.4"/>
-                <RowDefinition Height="100*"/>
+                <RowDefinition Height="350*"/>
                 <RowDefinition Height="50" MaxHeight="61"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
@@ -29,19 +29,19 @@
             </Grid.ColumnDefinitions>
             <TextBox x:Name="workOrderFromTextBox" Text="{Binding WorkOrderFromTextBox}"  materialDesign:HintAssist.Hint="工单号起始号码（必填)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1"/>
             <TextBox Grid.Column="2" Grid.ColumnSpan="2" x:Name="workOrderToTextBox" Text="{Binding WorkOrderToTextBox}" Grid.Row="1" materialDesign:HintAssist.Hint="工单号终止号码（选填)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"/>
-            <Button x:Name="pastedMultipleOrderButton" Grid.Row="1" Grid.Column="4" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="从复制的文本中解析一个或多个工单" Click="pastedMultipleOrderButton_Click">
+            <Button Background="#1890FF" x:Name="pastedMultipleOrderButton" Grid.Row="1" Grid.Column="4" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="从复制的文本中解析一个或多个工单" Click="pastedMultipleOrderButton_Click">
                 <TextBlock Text="粘贴" />
             </Button>
 
-            <Button Grid.Row="1" Name="productIndexQueryButton"  Foreground="White"  Click="productIndexQueryButton_Click" Grid.Column="5"  Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="查询指定的工单信息">
+            <Button Background="#1890FF" Grid.Row="1" Name="productIndexQueryButton"  Foreground="White"  Click="productIndexQueryButton_Click" Grid.Column="5"  Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="查询指定的工单信息">
                 <TextBlock Text="查询" />
             </Button>
 
-            <DataGrid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="7" x:Name="ProductionIndexMain" IsReadOnly="True"
+            <DataGrid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="7" x:Name="ProductionIndexMain" IsReadOnly="True"
                       AutoGeneratingColumn="ProductionIndexMain_AutoGeneratingColumn" 
                       SelectionChanged="ProductionIndexMain_SelectionChanged" 
-                        CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" 
-                      Grid.RowSpan="2" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}">
+                        CanUserAddRows="False"  SelectionMode="Extended" 
+                      Grid.RowSpan="2" ItemsSource="{Binding MES_MO_TO_EIP_POOLs}" Margin="0,46.2,0,0" Height="261" VerticalAlignment="Top">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Command="Copy" />
@@ -52,7 +52,7 @@
                 Grid.Row="3" Grid.ColumnSpan="7" Padding="13" VerticalAlignment="Center" >
                 <TextBlock FontSize="16" HorizontalAlignment="Center" Text="评分明细（选择上方工单查看得分明细）" />
             </materialDesign:Card>
-            <DataGrid Grid.Row="5" Grid.ColumnSpan="7" x:Name="ProductionIndexDatagrid" 
+            <DataGrid Grid.Row="4" Grid.ColumnSpan="7" x:Name="ProductionIndexDatagrid" 
                       IsReadOnly="True"  
                        CanUserAddRows="False" SelectionUnit="Cell" SelectionMode="Extended" 
                       AutoGeneratingColumn="ProductionIndexDatagrid_AutoGeneratingColumn" 

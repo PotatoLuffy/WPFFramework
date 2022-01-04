@@ -27,7 +27,7 @@ namespace EIPMonitor
         public Welcome()
         {
             InitializeComponent();
-            Messenger.Default.Send(String.Empty, "InitializeTheMainWindowLayout");
+            //Messenger.Default.Send(String.Empty, "InitializeTheMainWindowLayout");
         }
         //Messenger.Default.Send(String.Empty, "InitializeTheMainWindowLayout")
     }

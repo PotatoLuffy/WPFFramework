@@ -38,5 +38,15 @@ namespace EIPMonitor.DomainServices.UserService
             Byte[] encryptedPassword = encryptor.ComputeHash(concatCleartextPasswordWithSalt);
             return BitConverter.ToString(encryptedPassword);
         }
+
+        public static String MD5Encrypt(String securityStamp, String cleartextPassword)
+        {
+            if (String.IsNullOrWhiteSpace(securityStamp)) throw new TheSecurityStampCanNotBeEmptyException();
+            if (String.IsNullOrWhiteSpace(cleartextPassword)) throw new ThePasswordCanNotBeEmptyException();
+            Byte[] concatCleartextPasswordWithSalt = Encoding.UTF8.GetBytes(String.Format("{0}{1}", cleartextPassword, securityStamp));
+            MD5Cng encryptor = new MD5Cng();
+            Byte[] encryptedPassword = encryptor.ComputeHash(concatCleartextPasswordWithSalt);
+            return BitConverter.ToString(encryptedPassword).Replace("-", String.Empty).ToLower();
+        }
     }
 }

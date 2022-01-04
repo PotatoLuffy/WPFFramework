@@ -29,12 +29,14 @@ namespace EIPMonitor.Views.PowerMeter
     {
         private ProductionIndexQueryUserControlViewModel productionIndexQueryUserControlViewModel;
         private IRequestLimitControlService requestLimitControlService;
+        private readonly string className;
         public ProductionIndexQueryUserControl()
         {
             InitializeComponent();
             productionIndexQueryUserControlViewModel = new ProductionIndexQueryUserControlViewModel();
             DataContext = productionIndexQueryUserControlViewModel;
             requestLimitControlService = IocKernel.Get<IRequestLimitControlService>();
+            className = this.GetType().FullName;
         }
         private void ProductionIndexDatagrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -89,9 +91,8 @@ namespace EIPMonitor.Views.PowerMeter
         }
         private async void ProductionIndexMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
+
+                var getThePermission = requestLimitControlService.RequestClickPermission(className, "ProductionIndexMain_SelectionChanged");
                 if (!getThePermission)
                 {
                     Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
@@ -101,54 +102,51 @@ namespace EIPMonitor.Views.PowerMeter
                 if (datagrid == null) return;
                 var mapperSource = datagrid.SelectedItem as MES_MO_TO_EIP_POOL;
                 if (mapperSource == null) return;
-                await productionIndexQueryUserControlViewModel.GetSelectedEntryDetails(mapperSource).ConfigureAwait(true);
-            }
-            finally
-            {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
-            }
+                await Task.Run(()=> productionIndexQueryUserControlViewModel.GetSelectedEntryDetails(mapperSource).Wait()).ContinueWith(t=> {
+                    requestLimitControlService.ReleaseClickPermission(className, "ProductionIndexMain_SelectionChanged");
+                    if(t.IsFaulted)
+                        Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+                });
         }
         private async void workOrderFromTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            try
+            var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "workOrderFromTextBox");
+            if (!getThePermission)
             {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "workOrderFromTextBox");
-                if (!getThePermission)
-                {
-                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                    return;
-                }
-                await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                return;
             }
-            finally
+            await Task.Run(() => productionIndexQueryUserControlViewModel.MOListQuery().Wait()).ContinueWith(t =>
             {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "workOrderFromTextBox");
-            }
+                requestLimitControlService.ReleaseClickPermission(className, "workOrderFromTextBox");
+                if (t.IsFaulted)
+                    Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+            });
         }
         private async void productIndexQueryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            try
+            var btnName = button.Name;
+            var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, btnName);
+            if (!getThePermission)
             {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
-                if (!getThePermission)
-                {
-                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                    return;
-                }
-                await productionIndexQueryUserControlViewModel.MOListQuery().ConfigureAwait(true);
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                return;
             }
-            finally
+            await Task.Run(() => productionIndexQueryUserControlViewModel.MOListQuery().Wait()).ContinueWith(t =>
             {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, button.Name);
-            }
+                requestLimitControlService.ReleaseClickPermission(className, btnName);
+                if (t.IsFaulted)
+                    Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+            });
         }
         private void pastedMultipleOrderButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
+            var btnName = button.Name;
             try
             {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
+                var getThePermission = requestLimitControlService.RequestClickPermission(className, btnName);
                 if (!getThePermission)
                 {
                     Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
@@ -162,7 +160,7 @@ namespace EIPMonitor.Views.PowerMeter
             }
             finally
             {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, button.Name);
+                requestLimitControlService.ReleaseClickPermission(className, btnName);
             }
         }
     }

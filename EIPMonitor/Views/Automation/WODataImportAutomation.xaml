@@ -41,56 +41,56 @@
             <TextBox x:Name="materialCodeTextbox" Text="{Binding materialCodeTextbox, Mode=TwoWay}" materialDesign:HintAssist.Hint="物料编码" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Column="2" IsReadOnly="True" IsEnabled="False"  VerticalAlignment="Center" Grid.ColumnSpan="2" />
             <TextBox x:Name="materialNameTextbox" Text="{Binding materialNameTextbox, Mode=TwoWay}" materialDesign:HintAssist.Hint="物料名称" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Grid.Column="5" IsReadOnly="True" IsEnabled="False"  VerticalAlignment="Center"/>
 
-            <Button Grid.Row="1" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤1" />
-            <Button x:Name="AOITestButton" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤1 AOI 同步">
+            <Button Background="#1890FF" Grid.Row="1" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤1" />
+            <Button Background="#1890FF" x:Name="AOITestButton" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤1 AOI 同步">
                 <TextBlock Text="AOI 同步" />
             </Button>
             <TextBox x:Name="AOITestTextBlock" Text="{Binding AOITestTextBlock, Mode=TwoWay}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="AOI 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤2" />
-            <Button x:Name="BatteryCurrentButton" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤2 电池电流 同步">
+            <Button Background="#1890FF" Grid.Row="2" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤2" />
+            <Button Background="#1890FF" x:Name="BatteryCurrentButton" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤2 电池电流 同步">
                 <TextBlock Text="电池电流 同步" />
             </Button>
             <TextBox x:Name="BatteryCurrentTextBlock" Text="{Binding BatteryCurrentTextBlock, Mode=TwoWay}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="电池电流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="3" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤3" />
-            <Button x:Name="FuncionTestButton" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤3 单板测试 同步">
+            <Button Background="#1890FF" Grid.Row="3" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤3" />
+            <Button Background="#1890FF" x:Name="FuncionTestButton" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤3 单板测试 同步">
                 <TextBlock Text="单板测试 同步" />
             </Button>
             <TextBox x:Name="FuncionTestTextBlock" Text="{Binding FuncionTestTextBlock, Mode=TwoWay}" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="电池电流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="4" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤4" />
-            <Button x:Name="HighVoltageInsulationTestButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤4 耐压 同步">
+            <Button Background="#1890FF" Grid.Row="4" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤4" />
+            <Button Background="#1890FF" x:Name="HighVoltageInsulationTestButton" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" ToolTip="步骤4 耐压 同步">
                 <TextBlock Text="耐压 同步" />
             </Button>
             <TextBox x:Name="HighVoltageInsulationTestTextBlock" Text="{Binding HighVoltageInsulationTestTextBlock, Mode=TwoWay}" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" materialDesign:HintAssist.Hint="耐压 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             
-            <Button Grid.Row="5" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <Button x:Name="AutomationButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+            <Button Background="#1890FF" Grid.Row="5" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
+            <Button Background="#1890FF" x:Name="AutomationButton" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
                     ToolTip="步骤5 自动化交流 同步">
                 <TextBlock Text="自动化交流 同步" />
             </Button>
             <TextBox x:Name="AutomationTextBlock" Text="{Binding IntrinsicErrorDetailTextBlock, Mode=TwoWay}" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
                      materialDesign:HintAssist.Hint="自动化交流 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="6" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
-            <Button x:Name="AutomationConnectionChannelButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+            <Button Background="#1890FF" Grid.Row="6" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤5" />
+            <Button Background="#1890FF" x:Name="AutomationConnectionChannelButton" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
                     ToolTip="步骤5 自动化信道 同步">
                 <TextBlock Text="自动化信道 同步" />
             </Button>
             <TextBox x:Name="AutomationConnectionChannelTextBlock" Text="{Binding DailyTimingErrorTextBlock, Mode=TwoWay}" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
                      materialDesign:HintAssist.Hint="自动化信道 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
-            <Button x:Name="AutomationParameterButton" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+            <Button Background="#1890FF" Grid.Row="7" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤6" />
+            <Button Background="#1890FF" x:Name="AutomationParameterButton" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
                     ToolTip="步骤6 自动化参数设置 同步">
                 <TextBlock Text="自动化参数设置 同步" />
             </Button>
             <TextBox x:Name="AutomationParameterTextBlock" Text="{Binding ParameterSettingTextBlock, Mode=TwoWay}" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" 
                      materialDesign:HintAssist.Hint="自动化参数设置 同步结果" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-            <Button Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
-            <Button x:Name="ProductionStoreButton" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
+            <Button Background="#1890FF" Grid.Row="8" Style="{DynamicResource MaterialDesignFloatingActionMiniButton}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Content="步骤7" />
+            <Button Background="#1890FF" x:Name="ProductionStoreButton" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="10" 
                     ToolTip="步骤7 成品入库 同步">
                 <TextBlock Text="成品入库 同步" />
             </Button>

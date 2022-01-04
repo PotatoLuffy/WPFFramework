@@ -44,7 +44,7 @@ namespace EIPMonitor.ViewModel.Functions
                 {
                     await GetScoresAndDetail(null, null, this.CopiedOrders).ConfigureAwait(false);
                 }
-                if (String.IsNullOrWhiteSpace(workOrderFromTextBox) && String.IsNullOrWhiteSpace(workOrderToTextBox))
+                if (String.IsNullOrWhiteSpace(workOrderFromTextBox) && String.IsNullOrWhiteSpace(workOrderToTextBox) && !LocalConstant.IsAdmin)
                 {
                     Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
                     return;

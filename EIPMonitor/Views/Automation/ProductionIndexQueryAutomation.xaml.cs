@@ -29,12 +29,14 @@ namespace EIPMonitor.Views.Automation
     {
         private ProductionIndexQueryAutomationViewModel productionIndexQueryAutomationViewModel;
         private IRequestLimitControlService requestLimitControlService;
+        private readonly string className;
         public ProductionIndexQueryAutomation()
         {
             InitializeComponent();
             productionIndexQueryAutomationViewModel = new ProductionIndexQueryAutomationViewModel();
             DataContext = productionIndexQueryAutomationViewModel;
             requestLimitControlService = IocKernel.Get<IRequestLimitControlService>();
+            className = this.GetType().FullName;
         }
         private void ProductionIndexDatagrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -89,59 +91,54 @@ namespace EIPMonitor.Views.Automation
         }
         private async void ProductionIndexMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            var getThePermission = requestLimitControlService.RequestClickPermission(className, "ProductionIndexMain_SelectionChanged");
+            if (!getThePermission)
             {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
-                if (!getThePermission)
-                {
-                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                    return;
-                }
-                var datagrid = e.Source as DataGrid;
-                if (datagrid == null) return;
-                var mapperSource = datagrid.SelectedItem as MES_MO_TO_EIP_POOL;
-                if (mapperSource == null) return;
-                await productionIndexQueryAutomationViewModel.GetSelectedEntryDetails(mapperSource).ConfigureAwait(true);
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                return;
             }
-            finally
+            var datagrid = e.Source as DataGrid;
+            if (datagrid == null) return;
+            var mapperSource = datagrid.SelectedItem as MES_MO_TO_EIP_POOL;
+            if (mapperSource == null) return;
+            await Task.Run(() => productionIndexQueryAutomationViewModel.GetSelectedEntryDetails(mapperSource).Wait()).ContinueWith(t =>
             {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "ProductionIndexMain_SelectionChanged");
-            }
+                requestLimitControlService.ReleaseClickPermission(className, "ProductionIndexMain_SelectionChanged");
+                if (t.IsFaulted)
+                    Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+            });
         }
         private async void workOrderFromTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            try
+            var getThePermission = requestLimitControlService.RequestClickPermission(className, "workOrderFromTextBox");
+            if (!getThePermission)
             {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, "workOrderFromTextBox");
-                if (!getThePermission)
-                {
-                    Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
-                    return;
-                }
-                await productionIndexQueryAutomationViewModel.MOListQuery().ConfigureAwait(true);
+                Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
+                return;
             }
-            finally
+            await Task.Run(() => productionIndexQueryAutomationViewModel.MOListQuery().Wait()).ContinueWith(t =>
             {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, "workOrderFromTextBox");
-            }
+                requestLimitControlService.ReleaseClickPermission(className, "workOrderFromTextBox");
+                if (t.IsFaulted)
+                    Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+            });
         }
         private async void productIndexQueryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            try
-            {
-                var getThePermission = requestLimitControlService.RequestClickPermission(this.GetType().FullName, button.Name);
+            var btnName = button.Name;
+                var getThePermission = requestLimitControlService.RequestClickPermission(className, btnName);
                 if (!getThePermission)
                 {
                     Messenger.Default.Send("请求已经再处理中，请勿重复点击。", "SendMessageToMainWin");
                     return;
                 }
-                await productionIndexQueryAutomationViewModel.MOListQuery().ConfigureAwait(true);
-            }
-            finally
-            {
-                requestLimitControlService.ReleaseClickPermission(this.GetType().FullName, button.Name);
-            }
+                await Task.Run(() => productionIndexQueryAutomationViewModel.MOListQuery().Wait()).ContinueWith(t =>
+                {
+                    requestLimitControlService.ReleaseClickPermission(className, btnName);
+                    if (t.IsFaulted)
+                        Messenger.Default.Send(t.Exception.Flatten().InnerException.Message, "SendMessageToMainWin");
+                });
         }
         private void pastedMultipleOrderButton_Click(object sender, RoutedEventArgs e)
         {

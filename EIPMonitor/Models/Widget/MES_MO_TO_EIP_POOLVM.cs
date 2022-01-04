@@ -12,7 +12,9 @@ namespace EIPMonitor.Model.Widget
     {
         private bool checkbox;
         [DisplayName("选择")]
-        public Boolean CheckBox { get => checkbox; set => SetProperty(ref checkbox, value); }
+        public Boolean CheckBox { 
+            get => checkbox; 
+            set => SetProperty(ref checkbox, value); }
         [DisplayName("更新标记")]
         public String ExistsFlagName { get => this.ExistsFlag ? "不可更新" : "可更新"; }
         [DisplayName("提交状态")]

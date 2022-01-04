@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using EIPMonitor.Database.Interface.Generic;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Transaction.Interface.Generic;
 using Infrastructure.Standard.Type;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EIPMonitor.Databse.Generic
 {
-    public sealed class CRUDService:ICreateCommand,IUpdateCommand, IExtractCommand, IDeleteCommand
+    public sealed class CRUDService:ICreateCommand,IUpdateCommand, IExtractCommand, IDeleteCommand, IUpdateCommandTransaction
     {
         private OracleConnectionStringBuilder oracleConn;
         public CRUDService(OracleConnectionStringBuilder oracleConn)
@@ -68,6 +69,15 @@ namespace EIPMonitor.Databse.Generic
                 return result.ToList();
             }
         }
-
+        public async Task<Int32> UpdateTransaction<T>(String sqlText, T @t, IDbConnection dbConnection, IDbTransaction dbTransaction)
+        {
+            var result = await dbConnection.ExecuteAsync(sqlText, @t, transaction: dbTransaction).ConfigureAwait(false);
+            return result;
+        }
+        public async Task<T> ExtractEntry<T>(String sqlText, T @t, IDbConnection dbConnection, IDbTransaction dbTransaction)
+        {
+            var result = await dbConnection.QueryFirstOrDefaultAsync<T>(sqlText, @t, transaction: dbTransaction).ConfigureAwait(false);
+            return result;
+        }
     }
 }

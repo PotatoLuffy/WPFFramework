@@ -1,12 +1,18 @@
 ﻿using EIPMonitor.Databse.Generic;
+using EIPMonitor.Databse.Utility;
+using EIPMonitor.Domain.CustomException;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
 using EIPMonitor.Model.MasterData;
+using EIPMonitor.Model.Widget;
 using EIPMonitor.Transaction.Interface.Generic;
+using Infrastructure.Standard.Tool;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,13 +20,16 @@ namespace EIPMonitor.DomainServices.MasterData.MES_MO_TO_EIP_POOLServices
 {
     public class MES_MO_TO_EIP_POOLCheckService
     {
-        private IUpdateCommand updateCommand;
         private String searchSql;
         private String updateSql;
-
+        private IUpdateCommandTransaction UpdateCommandTransaction;
+        private ICustomTransactionHelper customTransactionHelper;
+        private string submitToOA = "http://clou-oaadd2.szclou.com:8210/system/portal.nsf/agGetGuowangApprove.xsp";
+        //private string submitToOA = "http://clou-test.szclou.com:9399/system/portal.nsf/agGetGuowangApprove.xsp";
         public MES_MO_TO_EIP_POOLCheckService()
         {
-            updateCommand = new CRUDService(LocalConstant.OracleCurrentConnectionStringBuilder);
+            UpdateCommandTransaction = new CRUDService(LocalConstant.OracleCurrentConnectionStringBuilder);
+            customTransactionHelper = new CustomTransactionHelper();
             updateSql = "update MES_MO_TO_EIP_POOL set  OA_UPLOADER = :OA_UPLOADER " +
                 " ,OA_UPLOADED_DATE = :OA_UPLOADED_DATE " +
                 " ,UPLOAD_TO_OA_FLAG = :UPLOAD_TO_OA_FLAG " +
@@ -30,35 +39,70 @@ namespace EIPMonitor.DomainServices.MasterData.MES_MO_TO_EIP_POOLServices
 
         public async Task<List<MES_MO_TO_EIP_POOL>> Check(List<MES_MO_TO_EIP_POOL> mES_MO_TO_EIP_POOLs, IUserStamp userStamp)
         {
-            for (int inx = 0; inx < mES_MO_TO_EIP_POOLs.Count; inx++)
+            var conn = customTransactionHelper.GetConn(LocalConstant.OracleCurrentConnectionStringBuilder);
+            using (conn)
             {
-                var existsInDb = await updateCommand.ExtractEntry<MES_MO_TO_EIP_POOL>(searchSql, mES_MO_TO_EIP_POOLs[inx]).ConfigureAwait(false);
-                //if (existsInDb == null)
-                //{
-                //    mES_MO_TO_EIP_POOLs[inx] = null;
-                //}
-                mES_MO_TO_EIP_POOLs[inx].OA_UPLOADER = $"{userStamp.EmployeeId} {userStamp.UserName}";
-                mES_MO_TO_EIP_POOLs[inx].OA_UPLOADED_DATE = DateTime.Now;
-                mES_MO_TO_EIP_POOLs[inx].UPLOAD_TO_OA_FLAG = 1;
-                var result = await updateCommand.Update<MES_MO_TO_EIP_POOL>(updateSql, mES_MO_TO_EIP_POOLs[inx]).ConfigureAwait(false);
-                //if (result <= 0)
-                //{
-                //    mES_MO_TO_EIP_POOLs[inx] = null;
-                //}
+                List<MES_MO_TO_EIP_POOL> requestedData = new List<MES_MO_TO_EIP_POOL>();
+                var currentDate = DateTime.Now;
+                var originalData = mES_MO_TO_EIP_POOLs.DeepClone();
+                customTransactionHelper.OpenConn(conn);
+                var tran = customTransactionHelper.BeginTransaction(conn, IsolationLevel.ReadCommitted);
+                try
+                {
+                    for (int inx = 0; inx < mES_MO_TO_EIP_POOLs.Count; inx++)
+                    {
+
+                        var existsInDb = await UpdateCommandTransaction.ExtractEntry<MES_MO_TO_EIP_POOL>(searchSql, mES_MO_TO_EIP_POOLs[inx], conn, tran).ConfigureAwait(false);
+                        //if (existsInDb == null)
+                        //{
+                        //    mES_MO_TO_EIP_POOLs[inx] = null;
+                        //}
+                        mES_MO_TO_EIP_POOLs[inx].OA_UPLOADER = $"{userStamp.EmployeeId} {userStamp.UserName}";
+                        mES_MO_TO_EIP_POOLs[inx].OA_UPLOADED_DATE = currentDate;
+                        mES_MO_TO_EIP_POOLs[inx].UPLOAD_TO_OA_FLAG = 1;
+                        var result = await UpdateCommandTransaction.UpdateTransaction<MES_MO_TO_EIP_POOL>(updateSql, mES_MO_TO_EIP_POOLs[inx], conn, tran).ConfigureAwait(false);
+                        if (result > 0) requestedData.Add(mES_MO_TO_EIP_POOLs[inx]);
+                        //if (result <= 0)
+                        //{
+                        //    mES_MO_TO_EIP_POOLs[inx] = null;
+                        //}
+                    }
+                    var a = new
+                    {
+                        OA_UPLOADED_DATE = currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                        MD5_CODE = UserService.UserEncryptionService.MD5Encrypt($"clou{userStamp.EmployeeId}", currentDate.ToString("yyyy-MM-dd HH:mm:ss.fff")),
+                        OA_UPLOADER = userStamp.EmployeeId,
+                        rows = requestedData
+                    };
+                    StringContent stringContent = new StringContent(JsonConvert.SerializeObject(a), Encoding.UTF8, "application/json");
+
+                    var responseResult = await HttpRequestCustomize.PostAsync(submitToOA, stringContent).ConfigureAwait(true);
+                    var content = await responseResult.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    OAResponse oAResponse = JsonConvert.DeserializeObject<OAResponse>(content);
+                    if (oAResponse == null)
+                    {
+                        throw new OAResponseFailureException("提交OA失败，请稍后5分钟再试，如果连续三次失败，请联系流程与IT管理部丁龙飞 00074729");
+                    }
+                    if (oAResponse.SUCCESS)
+                    {
+                        customTransactionHelper.Commit(tran);
+                        return requestedData;
+                    }
+
+
+                    throw new OAResponseFailureException("提交OA失败，请稍后5分钟再试，如果连续三次失败，请联系流程与IT管理部丁龙飞 00074729");
+                }
+                catch (OAResponseFailureException)
+                {
+                    customTransactionHelper.Rollback(tran);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    customTransactionHelper.Rollback(tran);
+                    throw;
+                }
             }
-            mES_MO_TO_EIP_POOLs.RemoveAll(i => i == null);
-            var jsonResult = JsonConvert.SerializeObject(mES_MO_TO_EIP_POOLs);
-
-            EIP_Monitor_LogCreateService.Log(new EIP_Monitor_Log()
-            {
-                FunctionCalledInLogical = "DomainService:MES_MO_TO_EIP_POOLCheckService,Method:Check",
-                OperateDateTime = DateTime.Now,
-                OperatorUser = $"{userStamp.EmployeeId} {userStamp.UserName}",
-                ParameterJson = jsonResult.Length > 2000 ? JsonConvert.SerializeObject(mES_MO_TO_EIP_POOLs.Select(s => s.PRODUCTION_ORDER_ID)) : jsonResult,
-                SqlClauseOrFunction = $"Search Clause:{searchSql},Insert Clause:{updateSql}",
-
-            });
-            return mES_MO_TO_EIP_POOLs;
         }
     }
 }
