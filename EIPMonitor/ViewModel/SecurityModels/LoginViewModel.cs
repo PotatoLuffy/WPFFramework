@@ -85,8 +85,9 @@ namespace EIPMonitor.ViewModel.SecurityModels
                 dialog.BindDefaultViewModel();
                 Messenger.Default.Send(String.Empty, "ApplicationHiding");
                 var mainWin = dialog.ShowDialog();
+               
                 //Messenger.Default.Send("开始加载", "SendMessageToMainWin");
-                
+
                 this.ApplicationShutdown();
             }
             catch (Exception e)

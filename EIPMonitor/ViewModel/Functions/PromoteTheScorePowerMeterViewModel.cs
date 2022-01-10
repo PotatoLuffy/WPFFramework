@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EIPMonitor.ViewModel.Functions
 {
@@ -54,6 +55,11 @@ namespace EIPMonitor.ViewModel.Functions
         }
         public async Task GetMoInfo()
         {
+            if (this.OrderTextBox == null || string.IsNullOrWhiteSpace(this.orderTextBox))
+            {
+                MessageBox.Show("请先输入工单号。");
+                return;
+            }
             moInfo = await VerifyTheMOName(this.OrderTextBox).ConfigureAwait(true);
             if (moInfo == null) return;
             await GrabInformationOfWorkOrder(moInfo.IPONO).ConfigureAwait(true);

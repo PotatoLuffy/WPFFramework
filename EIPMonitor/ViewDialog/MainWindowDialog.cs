@@ -46,7 +46,7 @@ namespace EIPMonitor.ViewDialog
             {
                 mainWindowViewModel.InitializeBasicInformation();
             }));
-            Messenger.Default.Register<string>(GetWindowDialog(), "MainWindowShutdown", new Action<String>((arg) => { Application.Current.Shutdown(); Environment.Exit(0); }));
+            Messenger.Default.Register<string>(GetWindowDialog(), "MainWindowShutdown", new Action<String>((arg) => { GetWindowDialog().Close(); }));
             Messenger.Default.Register<string>(GetWindowDialog(), "SendMessageToMainWin", new Action<String>((msg) =>
             {
                 try

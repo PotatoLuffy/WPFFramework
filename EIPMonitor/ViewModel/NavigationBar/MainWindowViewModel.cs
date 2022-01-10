@@ -1,7 +1,10 @@
-﻿using EIPMonitor.DomainServices.MasterData;
+﻿using EIPMonitor.CustomUserControlRepository;
+using EIPMonitor.DomainServices.MasterData;
 using EIPMonitor.DomainServices.SecurityServices.FunctionServices;
+using EIPMonitor.DomainServices.SecurityServices.UserRolesServices;
 using EIPMonitor.LocalInfrastructure;
 using EIPMonitor.Model;
+using EIPMonitor.Model.SecurityModel;
 using EIPMonitor.Views.Automation;
 using EIPMonitor.Views.PowerMeter;
 using EIPMonitor.Views.UserControlViews;
@@ -18,7 +21,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace EIPMonitor.ViewModel.NavigationBar
 {
@@ -26,6 +31,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
     {
         private IEIP_PRO_GlobalParamConfigureService eIP_PRO_GlobalParamConfigureService;
         private EIP_MONITOR_PAGESearchService eIP_MONITOR_PAGESearchService = new EIP_MONITOR_PAGESearchService();
+        private EIP_MONITOR_ROLE_USERSearchService eIP_MONITOR_ROLE_USERSearchService = new EIP_MONITOR_ROLE_USERSearchService();
         private static IReadOnlyDictionary<String, Type> UserControlMapper = null;
         public MainWindowViewModel()
         {
@@ -68,7 +74,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private bool _controlsEnabled = true;
         private IUserStamp _user;
         private string _name;
-        private int intializeTotalSteps = 7;
+        private int intializeTotalSteps = 8;
         private string _msg;
         private bool _showMsg = false;
         public string Msg { get => _msg; set { SetProperty(ref _msg, value); ShowMsg = String.IsNullOrEmpty(Msg); } }
@@ -106,9 +112,15 @@ namespace EIPMonitor.ViewModel.NavigationBar
             }
 
             Messenger.Default.Send($"3/{intializeTotalSteps}:验证版本信息", "SendMessageToMainWin");
-            VeriyVersion().Wait();
-            Messenger.Default.Send($"4/{intializeTotalSteps}:版本正确", "SendMessageToMainWin");
-
+            var verifyTask = VeriyVersion();
+            verifyTask.Wait();
+            if (verifyTask.Result)
+                Messenger.Default.Send($"4/{intializeTotalSteps}:版本正确", "SendMessageToMainWin");
+            else {
+                MessageBox.Show("此软件版本不匹配最新的软件版本，请联系流程与IT管理部丁龙飞(00074729)获取最新版本");
+                ApplicationShutdown();
+                return;
+            }
             Messenger.Default.Send($"5/{intializeTotalSteps}:配置数据库信息", "SendMessageToMainWin");
             InitializeTheGlobalStaticParameter().Wait();
             Messenger.Default.Send($"6/{intializeTotalSteps}:配置数据库信息", "SendMessageToMainWin");
@@ -117,13 +129,16 @@ namespace EIPMonitor.ViewModel.NavigationBar
             pageTask.Wait();
             NavigationItems = pageTask.Result;
             Messenger.Default.Send($"7/{intializeTotalSteps}:授权页面加载完成", "SendMessageToMainWin");
+            Messenger.Default.Send($"8/{intializeTotalSteps}:验证管理员权限", "SendMessageToMainWin");
+            VerifyAdmin().Wait();
+            Messenger.Default.Send($"8/{intializeTotalSteps}:验证管理员权限结束", "SendMessageToMainWin");
         }
         public void ApplicationShutdown()
         {
             Messenger.Default.Send(String.Empty, "MainWindowShutdown");
         }
         public Version CurrentVersion { get => ApplicationDeployment.IsNetworkDeployed ? ApplicationDeployment.CurrentDeployment.CurrentVersion : Assembly.GetExecutingAssembly().GetName().Version; }
-        private async Task VeriyVersion()
+        private async Task<bool> VeriyVersion()
         {
             try
             {
@@ -132,13 +147,14 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 var verifiedVersion = new Version(config.Parameter);
                 if (verifiedVersion.Major != CurrentVersion.Major || verifiedVersion.Minor != CurrentVersion.Minor)
                 {
-                    Messenger.Default.Send("此软件版本不匹配最新的软件版本，请联系流程与IT管理部丁龙飞(00074729)获取最新版本", "SendMessageToLoginWin");
-                    return;
+                    return false;
                 }
+                return true;
             }
             catch (Exception e)
             {
                 Messenger.Default.Send("未能获取到版本信息", "SendMessageToLoginWin");
+                return false;
             }
         }
         private async Task InitializeTheGlobalStaticParameter()
@@ -181,6 +197,12 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 navigationItems.Add(new NavigationItem(page.PAGE_NAME, UserControlMapper[page.PAGE_FUNCTION_NAME]));
             }
             return navigationItems;
+        }
+        private async Task VerifyAdmin()
+        {
+            var userRolesTask = eIP_MONITOR_ROLE_USERSearchService.GetSpecificUserRoles(new EIP_MONITOR_ROLE_USER() { EMPLOYEEID = IocKernel.Get<IUserStamp>().EmployeeId });
+            userRolesTask.Wait();
+            LocalConstant.IsAdmin = userRolesTask.Result.Exists(w => w.ROLE_NAME == "管理员");
         }
         private static IEnumerable<NavigationItem> GenerateNavigationItems(ISnackbarMessageQueue snackbarMessageQueue)
         {

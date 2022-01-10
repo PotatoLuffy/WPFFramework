@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EIPMonitor.ViewModel.Functions
 {
@@ -45,9 +46,9 @@ namespace EIPMonitor.ViewModel.Functions
                 {
                     await GetScoresAndDetail(null, null, this.CopiedOrders).ConfigureAwait(false);
                 }
-                if (String.IsNullOrWhiteSpace(workOrderFromTextBox) && String.IsNullOrWhiteSpace(workOrderToTextBox))
+                if (String.IsNullOrWhiteSpace(workOrderFromTextBox) && String.IsNullOrWhiteSpace(workOrderToTextBox) && !LocalConstant.IsAdmin)
                 {
-                    Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
+                    MessageBox.Show("未找到任何工单。");
                     return;
                 }
                 var ifBeginOrder = Int32.TryParse(workOrderFromTextBox, out Int32 beginO);
@@ -57,7 +58,7 @@ namespace EIPMonitor.ViewModel.Functions
 
                 if (Details == null || Details.Count <= 0)
                 {
-                    Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
+                    MessageBox.Show("未找到任何工单。");
                     return;
                 }
 

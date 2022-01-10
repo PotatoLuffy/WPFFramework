@@ -22,22 +22,22 @@ namespace EIPMonitor.DomainServices.MasterData
         {
             extractCommand = new CRUDService(LocalConstant.OracleCurrentConnectionStringBuilder);
             rangeSearch = " select a.*,b.ZTYPE,b.ZDESC,b.ZFLAG,b.ZVALID,b.ZDSCORE,b.ZVER,b.ZWEIGHT,c.MATERIALSNAME from zcl_simul_d a inner join zcl_type b on a.SUBCLASSCODE = b.SUBCLASSCODE and a.ZKIND = b.ZKIND "
-                + " left outer join  (select IPONO, max( MATERIALSNAME) MATERIALSNAME FROM ZGW_MO_T  GROUP BY IPONO)  c on c.IPONO = a.WORK_ORDER_CODE"
-+ " where a.WORK_ORDER_CODE between :beginOrder and :endOrder and b.ZVALID = 1 and a.WORK_ORDER_CODE like '{0}%'"
-+ " order by WORK_ORDER_CODE ";
+                        + " left outer join  (select IPONO, max( MATERIALSNAME) MATERIALSNAME FROM ZGW_MO_T  GROUP BY IPONO)  c on c.IPONO = a.WORK_ORDER_CODE"
+                        + " where a.WORK_ORDER_CODE between :beginOrder and :endOrder and b.ZVALID = 1 and a.WORK_ORDER_CODE like '{0}%'"
+                        + " order by WORK_ORDER_CODE ";
 
             listSearch = " select a.*,b.ZTYPE,b.ZDESC,b.ZFLAG,b.ZVALID,b.ZDSCORE,b.ZVER,b.ZWEIGHT,c.MATERIALSNAME from zcl_simul_d a inner join zcl_type b on a.SUBCLASSCODE = b.SUBCLASSCODE and a.ZKIND = b.ZKIND "
-                                + " left outer join  (select IPONO, max( MATERIALSNAME) MATERIALSNAME FROM ZGW_MO_T  GROUP BY IPONO)  c on c.IPONO = a.WORK_ORDER_CODE"
-+ " where a.WORK_ORDER_CODE in ({0}) and b.ZVALID = 1 and a.WORK_ORDER_CODE like '{1}%' "
-+ " order by WORK_ORDER_CODE ";
+                        + " left outer join  (select IPONO, max( MATERIALSNAME) MATERIALSNAME FROM ZGW_MO_T  GROUP BY IPONO)  c on c.IPONO = a.WORK_ORDER_CODE"
+                        + " where a.WORK_ORDER_CODE in ({0}) and b.ZVALID = 1 and a.WORK_ORDER_CODE like '{1}%' "
+                        + " order by WORK_ORDER_CODE ";
         }
         public async Task<List<ZCL_SIMUL_D>> GetEntries(String beginOrder, String endOrder,List<String> workorderList,char startLetter)
         {
-            if (string.IsNullOrWhiteSpace(beginOrder) && string.IsNullOrWhiteSpace(endOrder) && workorderList.Count <= 0) return null;
+            if (string.IsNullOrWhiteSpace(beginOrder) && string.IsNullOrWhiteSpace(endOrder) && workorderList != null && workorderList.Count < 0) return null;
             string sqlText;
             DynamicParameters dynamicParameters = new DynamicParameters();
             //dynamicParameters.Add("startLetter", startLetter);
-            if ((workorderList?.Count??0) <=0)
+            if (workorderList == null || workorderList.Count <=0)
             {
                 sqlText = String.Format(rangeSearch,startLetter);
                 dynamicParameters.Add("beginOrder", beginOrder);

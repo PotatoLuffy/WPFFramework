@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EIPMonitor.ViewModel.Functions
 {
@@ -49,9 +50,9 @@ namespace EIPMonitor.ViewModel.Functions
                     await GetScoresAndDetail(null, null, this.CopiedOrders).ConfigureAwait(false);
                     return;
                 }
-                if (String.IsNullOrWhiteSpace(WorkOrderFromTextBox) && String.IsNullOrWhiteSpace(WorkOrderToTextBox))
+                if (String.IsNullOrWhiteSpace(WorkOrderFromTextBox) && String.IsNullOrWhiteSpace(WorkOrderToTextBox) && !LocalConstant.IsAdmin)
                 {
-                    Messenger.Default.Send("未找到任何工单。", "SendMessageToMainWin");
+                    MessageBox.Show("未找到任何工单。");
                     return;
                 }
                 var ifBeginOrder = Int32.TryParse(workOrderFromTextBox, out Int32 beginO);
