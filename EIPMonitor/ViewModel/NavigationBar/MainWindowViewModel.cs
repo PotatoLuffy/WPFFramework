@@ -74,7 +74,7 @@ namespace EIPMonitor.ViewModel.NavigationBar
         private bool _controlsEnabled = true;
         private IUserStamp _user;
         private string _name;
-        private int intializeTotalSteps = 8;
+        private int intializeTotalSteps = 10;
         private string _msg;
         private bool _showMsg = false;
         public string Msg { get => _msg; set { SetProperty(ref _msg, value); ShowMsg = String.IsNullOrEmpty(Msg); } }
@@ -132,6 +132,16 @@ namespace EIPMonitor.ViewModel.NavigationBar
             Messenger.Default.Send($"8/{intializeTotalSteps}:验证管理员权限", "SendMessageToMainWin");
             VerifyAdmin().Wait();
             Messenger.Default.Send($"8/{intializeTotalSteps}:验证管理员权限结束", "SendMessageToMainWin");
+
+            Messenger.Default.Send($"9/{intializeTotalSteps}:设置日志链接", "SendMessageToMainWin");
+            LocalConstant.SetUpConnection(LocalConstant.OracleCurrentConnectionStringBuilder.ToString());
+            Messenger.Default.Send($"9/{intializeTotalSteps}:设置日志链接结束", "SendMessageToMainWin");
+
+            Messenger.Default.Send($"9/{intializeTotalSteps}:设置日志", "SendMessageToMainWin");
+            LocalConstant.SetUpLogger();
+            Messenger.Default.Send($"9/{intializeTotalSteps}:设置日志结束", "SendMessageToMainWin");
+            
+
         }
         public void ApplicationShutdown()
         {
@@ -172,11 +182,13 @@ namespace EIPMonitor.ViewModel.NavigationBar
                 LocalConstant.MESTestDB = mesTestDb != null && !String.IsNullOrEmpty(mesTestDb.Parameter) ? JsonConvert.DeserializeObject<SqlConnectionStringBuilder>(mesTestDb.Parameter) : LocalConstant.MESTestDB;
                 LocalConstant.MESStandardDB = mesStandardDb != null && !String.IsNullOrEmpty(mesStandardDb.Parameter) ? JsonConvert.DeserializeObject<SqlConnectionStringBuilder>(mesStandardDb.Parameter) : LocalConstant.MESStandardDB;
                 LocalConstant.OracleCurrentConnectionStringBuilder = JsonConvert.DeserializeObject<OracleConnectionStringBuilder>(currentOracleDb.Parameter);
+                LocalConstant.CurrentMESDBConnection = LocalConstant.MESStandardDB;
                 if (LocalConstant.OracleCurrentConnectionStringBuilder == null || String.IsNullOrWhiteSpace(LocalConstant.OracleCurrentConnectionStringBuilder.ToString()))
                 {
                     Messenger.Default.Send("未配置Current_SGCCConnection，请联系流程与IT部配置Current_SGCCConnection", "SendMessageToLoginWin");
                     return;
                 }
+
             }
             catch (Exception e)
             {

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EIPMonitor.ViewModel.Functions
 {
@@ -119,25 +120,25 @@ namespace EIPMonitor.ViewModel.Functions
         public async Task TriggerTheButtonRelativeAction(string btnName)
         {
             DateTime now = DateTime.Now;
-            if ((now.TimeOfDay >= synchronous_black_range_begin_time && now.TimeOfDay <= synchronous_Black_Range_Begin_Break_Time_Start)
-                || (now.TimeOfDay >= synchronous_Black_Range_Begin_Break_Time_End && now.TimeOfDay <= synchronous_black_range_end_time)
-                || LocalConstant.IsAdmin
+            if (((now.TimeOfDay >= synchronous_black_range_begin_time && now.TimeOfDay <= synchronous_Black_Range_Begin_Break_Time_Start)
+                || (now.TimeOfDay >= synchronous_Black_Range_Begin_Break_Time_End && now.TimeOfDay <= synchronous_black_range_end_time))
+                && !LocalConstant.IsAdmin
                 )
             {
-                Messenger.Default.Send("上班时间禁止同步。", "SendMessageToMainWin");
+                MessageBox.Show("上班时间禁止同步。");
                 return;
             }
 
             try
             {
-                Messenger.Default.Send("开始验证单号。", "SendMessageToMainWin");
+                ReportTheProgress(btnName, "开始验证单号。");
                 var verifyResult = await VerifyTheMOName().ConfigureAwait(true);
                 if (verifyResult == null)
                 {
-                    Messenger.Default.Send("生产工单号不存在于ZGW_MO_T。", "SendMessageToMainWin");
+                    ReportTheProgress(btnName, "生产工单号不存在于ZGW_MO_T。");
                     return;
                 }
-                Messenger.Default.Send("工单号验证成功。", "SendMessageToMainWin");
+                ReportTheProgress(btnName, "工单号验证成功。");
                 btnCommentMapper[btnName]("开始同步,请稍后。");
 
                 SynchronousProductionData(btnName, verifyResult);
@@ -231,6 +232,10 @@ namespace EIPMonitor.ViewModel.Functions
                 return;
             }
             this.MES_MO_TO_EIP_POOLs = details.Aggregate(IocKernel.Get<IUserStamp>());
+        }
+        private void ReportTheProgress(string buttonName, String msg)
+        {
+            this.btnCommentMapper[buttonName](msg);
         }
 
     }

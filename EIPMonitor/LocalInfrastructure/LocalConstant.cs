@@ -33,7 +33,6 @@ namespace EIPMonitor.LocalInfrastructure
                     adoNetAppender.ConnectionString = connectionString;
                     adoNetAppender.ActivateOptions();
                 }
-
             }
             log4net.Util.LogLog.InternalDebugging = true;
         }
@@ -89,7 +88,7 @@ namespace EIPMonitor.LocalInfrastructure
         };
         public static SqlConnectionStringBuilder CurrentMESDBConnection = new SqlConnectionStringBuilder()
         {
-            DataSource = "10.98.99.8",
+            DataSource = "10.98.99.7",
             InitialCatalog = "OrBitXI",
             MultipleActiveResultSets = true,
             UserID = "sa",
